@@ -1,10 +1,10 @@
-local:
+#local:
 #  image: wemeep/wemeep-meeps-service
-  image: meepsservice
-  ports:
-    - "4567:4567"
-  links:
-    - mongo:dbmeep
+#  image: meepsservice
+#  ports:
+#    - "4567:4567"
+#  links:
+#    - mongo:dbmeep
 
 mongo:
   image: mongo:latest
@@ -12,7 +12,7 @@ mongo:
   privileged: true
   container_name: dbmeep
   volumes:
-    - ./mongo/data:/data
+    - ./meepData:/data
   ports:
     - "27017:27017"
     - "28017:28017"
@@ -21,6 +21,7 @@ mongo:
     - MONGO_PASS
   cap_add:
     - SYS_RESOURCE
+  command: --smallfiles
 
 mongogui:
   image: aegypius/genghis

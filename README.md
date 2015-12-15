@@ -53,19 +53,20 @@ Data: { body: { sender:<someUserId>, message:<someString>, ... } }
 ### Data model
 #### Objects
 ##### Meep
-|Field   |Values   |
-|---|---|
-| sender  | String  |
-| message  | String  |
-| id  | Number  |
-| type | String |
-| receipts | Number|
-| facebookId | Number |
-| public | Boolean |
-| isRoot | Boolean |
-| picture | URL |
-| updatedAt | Timestamp |
-| createdAt | Timestamp |
+|  Field      |  Values   |
+| :---------- | :-------- |
+| sender      | String    |
+| message     | String    |
+| id          | Number    |
+| type        | String    |
+| receipts    | Number    |
+| facebookId  | Number    |
+| public      | Boolean   |
+| isRoot      | Boolean   |
+| picture     | URL       |
+| updatedAt   | Timestamp |
+| createdAt   | Timestamp |
+| comments    | Array<Meep> |
 
 ##### User
 |Field   |Values   |
@@ -77,10 +78,12 @@ Data: { body: { sender:<someUserId>, message:<someString>, ... } }
 | twitterId | Number|
 | facebookId | Number |
 | gcmId | String |
-| public | Boolean |
+| isPublic | Boolean |
 | picture | URL |
 | updatedAt | Timestamp |
 | createdAt | Timestamp |
+| followers    | Array<User> |
+| followees    | Array<User> |
 
 ## TODO
 - Add authentication to the database
