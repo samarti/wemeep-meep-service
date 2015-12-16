@@ -1,5 +1,5 @@
 local:
-  image: wemeep/wemeep-meeps-service
+  image: wemeep/wemeep-meep-service
 #  image: meepsservice
   ports:
     - "4567:4567"
