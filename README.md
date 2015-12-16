@@ -80,6 +80,7 @@ Data: { body: { sender:<someUserId>, message:<someString>, ... } }
 | gcmId | String |
 | isPublic | Boolean |
 | picture | URL |
+| salt | String |
 | updatedAt | Timestamp |
 | createdAt | Timestamp |
 | followers    | Array<User> |

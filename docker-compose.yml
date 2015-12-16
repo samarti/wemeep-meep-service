@@ -1,10 +1,10 @@
-#local:
-#  image: wemeep/wemeep-meeps-service
+local:
+  image: wemeep/wemeep-meeps-service
 #  image: meepsservice
-#  ports:
-#    - "4567:4567"
-#  links:
-#    - mongo:dbmeep
+  ports:
+    - "4567:4567"
+  links:
+    - mongo:dbmeep
 
 mongo:
   image: mongo:latest

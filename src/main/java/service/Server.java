@@ -21,7 +21,7 @@ import static spark.Spark.post;
  */
 public class Server {
 
-    static MongoClient client = new MongoClient("192.168.99.100", 27017);
+    static MongoClient client = new MongoClient("dbmeep", 27017);
     static MongoDatabase database = client.getDatabase("local");
     static MongoCollection<Document> meepCol = database.getCollection("meeps");
 
