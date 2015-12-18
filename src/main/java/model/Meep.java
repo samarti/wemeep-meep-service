@@ -9,5 +9,5 @@ import java.util.Map;
 public class Meep {
     public String sender, message, type, facebookId, twitterId, isPublic, isRoot, picture;
     public List<Map<String, String>> receipts;
-    public long lat, longi;
+    public double lat, longi;
 }

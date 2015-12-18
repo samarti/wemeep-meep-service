@@ -1,8 +1,5 @@
 package utils;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import com.mongodb.BasicDBList;
 import model.Meep;
 import org.bson.Document;
@@ -24,16 +21,14 @@ public class DocumentBuilder {
         meep.append("updatedAt", "");
         meep.append("createdAt", "");
 
-        JsonArray jsonArray = new JsonArray();
-        jsonArray.add(new JsonPrimitive(arg.longi));
-        jsonArray.add(new JsonPrimitive(arg.lat));
-        JsonObject jobj = new JsonObject();
-        jobj.addProperty("type", "point");
-        jobj.add("coordinates", jsonArray);
-        JsonObject jsonObject_loc = new JsonObject();
-        jsonObject_loc.add("loc", jobj);
+        BasicDBList list = new BasicDBList();
+        list.add(arg.longi);
+        list.add(arg.lat);
+        Document jobj = new Document();
+        jobj.append("type", "Point");
+        jobj.append("coordinates", list);
 
-        meep.append("location", jobj.toString());
+        meep.append("location", jobj);
         if(isRoot){
             BasicDBList comments = new BasicDBList();
             meep.append("comments", comments);
