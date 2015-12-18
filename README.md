@@ -21,6 +21,13 @@ Set:
 
 ### WebService
 The web service exposes the following methods:
+- Get close meeps with `GET` at
+
+```
+http://host:8080/meeps?radius=<some km dist>&lat=<lat>&long=<long>
+
+Returns meeps close to the position on a radius
+```
 
 - Create a meep with `POST` at
 
@@ -64,6 +71,8 @@ Data: { body: { sender:<someUserId>, message:<someString>, ... } }
 | public      | Boolean   |
 | isRoot      | Boolean   |
 | picture     | URL       |
+| lat     | Long       |
+| longi     | Long       |
 | updatedAt   | Timestamp |
 | createdAt   | Timestamp |
 | comments    | Array<Meep> |

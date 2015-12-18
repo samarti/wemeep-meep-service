@@ -57,6 +57,23 @@ public class Server {
             return response.body();
         });
 
+
+        get("/meeps", (request1, response1) -> {
+            int km;
+            long lat, longi;
+            try {
+                km = Integer.parseInt(request1.params(":km"));
+                lat = Long.parseLong(request1.params(":lat"));
+                longi = Long.parseLong(request1.params(":long"));
+            } catch (Exception e){
+                response1.body("Bad arguments");
+                return response1.body();
+            }
+
+            response1.body("Bad arguments");
+            return response1.body();
+        });
+
         //Create a meep
         post("/meeps", (request, response) -> {
             Meep obj = Parser.parseMeep(request.body());
@@ -77,7 +94,7 @@ public class Server {
             query.put("_id", new ObjectId(id));
             FindIterable<Document> dbObj = meepCol.find(query);
             Document aux = dbObj.first();
-            if(aux == null)
+            if (aux == null)
                 response.body("Meep not found");
             else {
                 meepCol.findOneAndUpdate(aux, new Document("$push", new Document("comments", meep)), new FindOneAndUpdateOptions());
