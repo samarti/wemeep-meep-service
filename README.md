@@ -68,7 +68,7 @@ Data: { body: { sender:<someUserId>, message:<someString>, ... } }
 | type        | String    |
 | receipts    | Number    |
 | facebookId  | Number    |
-| public      | Boolean   |
+| isPublic      | Boolean   |
 | isRoot      | Boolean   |
 | picture     | URL       |
 | lat     | Long       |
