@@ -5,10 +5,10 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import model.Circle;
+import model.Comment;
 import model.Meep;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URL;
 import java.net.URLDecoder;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -30,6 +30,23 @@ public class Parser {
             ret.longi = obs.get(0).getAsDouble();
         }
         return ret;
+    }
+
+    public static Comment parseComment(String json){
+        return gson.fromJson(json, Comment.class);
+    }
+
+    public static String cleanMeepJson(String json){
+        JsonParser parser = new JsonParser();
+        JsonObject original = parser.parse(json).getAsJsonObject();
+        original.add("objectId", original.getAsJsonObject("_id").get("$oid"));
+        original.remove("_id");
+        original.addProperty("latitude", original.getAsJsonObject("location").getAsJsonArray("coordinates").get(1).getAsDouble());
+        original.addProperty("longitude", original.getAsJsonObject("location").getAsJsonArray("coordinates").get(0).getAsDouble());
+        original.remove("location");
+        original.remove("receipts");
+        original.remove("comments");
+        return original.toString();
     }
 
     public static Circle parseCircle(String json){

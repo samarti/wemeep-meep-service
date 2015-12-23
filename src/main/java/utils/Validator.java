@@ -14,16 +14,16 @@ public class Validator {
                 m.longi == 0.0 ||
                 m.message == null ||
                 m.sender == null ||
-                m.receipts == null)
+                m.receipts == null ||
+                m.senderId == null)
             return false;
         return true;
     }
 
     public static boolean validateComment(Comment c){
         if(c.message == null ||
-                c.sender == null ||
-                c.userId == null ||
-                c.username == null)
+                c.senderId == null ||
+                c.sender == null)
             return false;
         return true;
     }

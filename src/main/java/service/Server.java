@@ -1,6 +1,7 @@
 package service;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mongodb.BasicDBObject;
@@ -11,6 +12,7 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.FindOneAndUpdateOptions;
 import db.DBHelper;
+import model.Comment;
 import model.Meep;
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -21,11 +23,13 @@ import utils.Validator;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Map;
 
 import static spark.Spark.get;
 import static spark.Spark.post;
 
+import static com.mongodb.client.model.Projections.*;
 /**
  * Created by santiagomarti on 12/11/15.
  */
@@ -53,18 +57,18 @@ public class Server {
             if(aux == null)
                 response.body(red.toString() + "\n");
             else
-                response.body(aux.toJson());
+                response.body(Parser.cleanMeepJson(aux.toJson()));
             return response.body();
         });
 
         //Get a meep comments
         get("/meeps/:id/comments", (request, response) -> {
-            double limit, offset;
+            int limit, offset;
             try {
                 Map<String, String> data = Parser.splitQuery(request.queryString());
                 limit = Integer.parseInt(data.get("limit"));
-                offset = Double.parseDouble(data.get("offset"));
-                if(limit <= 0 || offset <= 0 || limit > 100)
+                offset = Integer.parseInt(data.get("offset"));
+                if(limit <= 0 || offset < 0 || limit > 100)
                     throw new Exception();
             } catch (Exception e){
                 JsonObject red = new JsonObject();
@@ -76,16 +80,31 @@ public class Server {
             String id = request.params(":id");
             BasicDBObject query = new BasicDBObject();
             query.put("_id", new ObjectId(id));
-            FindIterable<Document> dbObj = meepCol.find(query);
-            Document aux = dbObj.first();
-            JsonObject red = new JsonObject();
-            red.addProperty("Error", "Meep not found");
-            if(aux == null)
-                response.body(red.toString() + "\n");
-            else {
-                JsonParser parser = new JsonParser();
-                response.body((parser.parse(aux.get("comments").toString()).getAsJsonArray()) + "\n");
+            //query.put("comments", true);
+            BasicDBObject slicer = new BasicDBObject();
+            slicer.append("$slice", new int[]{0, 5});
+            BasicDBObject comments = new BasicDBObject();
+            comments.put("comments", slicer);
+
+            FindIterable<Document> dbObj = meepCol.find(query).projection(include("comments"));
+            Document meepAux = dbObj.first();
+            JsonParser parser = new JsonParser();
+            JsonArray ret = parser.parse(meepAux.toJson()).getAsJsonObject().getAsJsonArray("comments");
+            JsonArray ret2 = new JsonArray();
+            Iterator<JsonElement> it = ret.iterator();
+            while(it.hasNext()){
+                JsonElement com = it.next();
+                Document docAux = Document.parse(com.toString());
+                Comment aux = Parser.parseComment(docAux.toJson());
+                JsonObject aux2 = new JsonObject();
+                aux2.addProperty("message", aux.message);
+                aux2.addProperty("senderName", aux.sender);
+                aux2.addProperty("senderId", aux.senderId);
+                aux2.addProperty("createdAt", aux.createdAt);
+                aux2.addProperty("updatedAt", aux.updatedAt);
+                ret2.add(aux2.getAsJsonObject());
             }
+            response.body(ret2.toString() + "\n");
             return response.body();
         });
 
@@ -140,7 +159,7 @@ public class Server {
                 response.body(res.toString() + "\n");
                 return response.body();
             }
-            Document meep = DocumentBuilder.meepDocumentBuilder(obj, true);
+            Document meep = DocumentBuilder.meepDocumentBuilder(obj);
             meepCol.insertOne(meep);
             res.addProperty("id", meep.getObjectId("_id").toString());
             response.body(res.toString() + "\n");
@@ -150,24 +169,28 @@ public class Server {
         //Add a meep comment
         post("/meeps/:id/comments", (request, response) -> {
             String id = request.params(":id");
-            Meep obj = Parser.parseMeep(request.body(), false);
-            Document meep = DocumentBuilder.meepDocumentBuilder(obj, false);
+            JsonObject res = new JsonObject();
+            Comment ob = Parser.parseComment(request.body());
+            if(!Validator.validateComment(ob)){
+                res.addProperty("Error", "Missing fields");
+                response.body(res.toString());
+                return response.body();
+            }
+            Document comment = DocumentBuilder.commentDocumentBuilder(ob);
             BasicDBObject query = new BasicDBObject();
             query.put("_id", new ObjectId(id));
             FindIterable<Document> dbObj = meepCol.find(query);
             Document aux = dbObj.first();
-            if (aux == null)
-                response.body("Meep not found\n");
-            else {
-                meepCol.findOneAndUpdate(aux, new Document("$push", new Document("comments", meep)), new FindOneAndUpdateOptions());
-                JsonObject res = new JsonObject();
-                res.addProperty("success", true);
-                response.body(res.toString() + "\n");
+            if (aux == null) {
+                res.addProperty("Error", "Meep not found");
+                response.body(res.toString());
+            } else {
+                meepCol.findOneAndUpdate(aux, new Document("$push", new Document("comments", comment)), new FindOneAndUpdateOptions());
+                JsonObject res2 = new JsonObject();
+                res2.addProperty("Success", true);
+                response.body(res2.toString() + "\n");
             }
             return response.body();
         });
-
-
-
     }
 }

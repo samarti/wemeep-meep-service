@@ -8,7 +8,7 @@ import java.util.Map;
  * Created by santiagomarti on 12/11/15.
  */
 public class Meep {
-    public String sender, message, type, picture, objectId;
+    public String sender, message, type, picture, objectId, senderId;
     public List<Map<String, String>> receipts;
     public double lat, longi;
     public Boolean isPublic, isRoot;
