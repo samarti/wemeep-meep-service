@@ -64,10 +64,9 @@ Data: { body: { sender:<someUserId>, message:<someString>, ... } }
 | :---------- | :-------- |
 | sender      | String    |
 | message     | String    |
-| id          | Number    |
+| id          | String    |
 | type        | String    |
 | receipts    | Number    |
-| facebookId  | Number    |
 | isPublic      | Boolean   |
 | isRoot      | Boolean   |
 | picture     | URL       |
@@ -75,25 +74,17 @@ Data: { body: { sender:<someUserId>, message:<someString>, ... } }
 | longi     | Long       |
 | updatedAt   | Timestamp |
 | createdAt   | Timestamp |
-| comments    | Array<Meep> |
+| comments    | Array<Comment> |
 
-##### User
+##### Comment
 |Field   |Values   |
 |---|---|
 | username  | String  |
-| email  | String  |
-| id  | Number  |
-| password | String |
-| twitterId | Number|
-| facebookId | Number |
-| gcmId | String |
-| isPublic | Boolean |
-| picture | URL |
-| salt | String |
+| userId   | String |
+| message     | String    |
+| id  | String  |
 | updatedAt | Timestamp |
 | createdAt | Timestamp |
-| followers    | Array<User> |
-| followees    | Array<User> |
 
 ## TODO
 - Add authentication to the database
