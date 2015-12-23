@@ -2,6 +2,7 @@ package service;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
@@ -16,6 +17,7 @@ import org.bson.types.ObjectId;
 import utils.DocumentBuilder;
 import utils.Parser;
 import utils.QueryBuilder;
+import utils.Validator;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -46,8 +48,10 @@ public class Server {
             query.put("_id", new ObjectId(id));
             FindIterable<Document> dbObj = meepCol.find(query);
             Document aux = dbObj.first();
+            JsonObject red = new JsonObject();
+            red.addProperty("Error", "Meep not found");
             if(aux == null)
-                response.body("Meep not found\n");
+                response.body(red.toString() + "\n");
             else
                 response.body(aux.toJson());
             return response.body();
@@ -55,15 +59,32 @@ public class Server {
 
         //Get a meep comments
         get("/meeps/:id/comments", (request, response) -> {
+            double limit, offset;
+            try {
+                Map<String, String> data = Parser.splitQuery(request.queryString());
+                limit = Integer.parseInt(data.get("limit"));
+                offset = Double.parseDouble(data.get("offset"));
+                if(limit <= 0 || offset <= 0 || limit > 100)
+                    throw new Exception();
+            } catch (Exception e){
+                JsonObject red = new JsonObject();
+                red.addProperty("Error", "Bad arguments. Please provide limit and offset");
+                response.body(red.toString() + "\n");
+                return response.body();
+            }
+
             String id = request.params(":id");
             BasicDBObject query = new BasicDBObject();
             query.put("_id", new ObjectId(id));
             FindIterable<Document> dbObj = meepCol.find(query);
             Document aux = dbObj.first();
+            JsonObject red = new JsonObject();
+            red.addProperty("Error", "Meep not found");
             if(aux == null)
-                response.body("Meep not found\n");
+                response.body(red.toString() + "\n");
             else {
-                response.body((aux.get("comments")).toString() + "\n");
+                JsonParser parser = new JsonParser();
+                response.body((parser.parse(aux.get("comments").toString()).getAsJsonArray()) + "\n");
             }
             return response.body();
         });
@@ -72,15 +93,17 @@ public class Server {
         get("/meeps", (request1, response1) -> {
             int km;
             double lat, longi;
-            Map<String, String> data = Parser.splitQuery(request1.queryString());
             try {
+                Map<String, String> data = Parser.splitQuery(request1.queryString());
                 km = Integer.parseInt(data.get("radius"));
                 lat = Double.parseDouble(data.get("lat"));
                 longi = Double.parseDouble(data.get("longi"));
                 if(km <= 0)
                     throw new Exception();
             } catch (Exception e){
-                response1.body("Bad arguments. Please provide radius, lat and longi\n");
+                JsonObject red = new JsonObject();
+                red.addProperty("Error", "Bad arguments. Please provide radius, lat and longi");
+                response1.body(red.toString() + "\n");
                 return response1.body();
             }
 
@@ -90,7 +113,7 @@ public class Server {
                 while (cursor.hasNext()) {
                     Document docAux = cursor.next();
                     ObjectId id = (ObjectId) docAux.get("_id");
-                    Meep aux = Parser.parseMeep(docAux.toJson());
+                    Meep aux = Parser.parseMeep(docAux.toJson(), true);
                     JsonObject aux2 = new JsonObject();
                     aux2.addProperty("message", aux.message);
                     aux2.addProperty("senderName", aux.sender);
@@ -110,10 +133,15 @@ public class Server {
 
         //Create a meep
         post("/meeps", (request, response) -> {
-            Meep obj = Parser.parseMeep(request.body());
+            Meep obj = Parser.parseMeep(request.body(), false);
+            JsonObject res = new JsonObject();
+            if(!Validator.validateMeep(obj)){
+                res.addProperty("Error", "Missing fields");
+                response.body(res.toString() + "\n");
+                return response.body();
+            }
             Document meep = DocumentBuilder.meepDocumentBuilder(obj, true);
             meepCol.insertOne(meep);
-            JsonObject res = new JsonObject();
             res.addProperty("id", meep.getObjectId("_id").toString());
             response.body(res.toString() + "\n");
             return response.body();
@@ -122,7 +150,7 @@ public class Server {
         //Add a meep comment
         post("/meeps/:id/comments", (request, response) -> {
             String id = request.params(":id");
-            Meep obj = Parser.parseMeep(request.body());
+            Meep obj = Parser.parseMeep(request.body(), false);
             Document meep = DocumentBuilder.meepDocumentBuilder(obj, false);
             BasicDBObject query = new BasicDBObject();
             query.put("_id", new ObjectId(id));

@@ -14,8 +14,6 @@ public class DocumentBuilder {
         meep.append("sender", arg.sender);
         meep.append("message", arg.message);
         meep.append("type", arg.type);
-        meep.append("facebookId", arg.facebookId);
-        meep.append("twitterId", arg.twitterId);
         meep.append("isRoot", arg.isRoot);
         meep.append("picture", arg.picture);
 
@@ -30,7 +28,8 @@ public class DocumentBuilder {
         if(isRoot){
             BasicDBList comments = new BasicDBList();
             meep.append("comments", comments);
-            meep.append("receipts", arg.receipts.toString());
+            BasicDBList receipts = new BasicDBList();
+            meep.append("receipts", receipts);
             meep.append("isPublic", arg.isPublic);
         }
         return meep;
