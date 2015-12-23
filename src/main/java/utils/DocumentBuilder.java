@@ -18,8 +18,6 @@ public class DocumentBuilder {
         meep.append("twitterId", arg.twitterId);
         meep.append("isRoot", arg.isRoot);
         meep.append("picture", arg.picture);
-        meep.append("updatedAt", "");
-        meep.append("createdAt", "");
 
         BasicDBList list = new BasicDBList();
         list.add(arg.longi);

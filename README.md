@@ -24,7 +24,7 @@ The web service exposes the following methods:
 - Get close meeps with `GET` at
 
 ```
-http://host:8080/meeps?radius=<some km dist>&lat=<lat>&long=<long>
+http://host:8080/meeps?radius=<some km dist>&lat=<lat>&longi=<long>
 
 Returns meeps close to the position on a radius
 ```

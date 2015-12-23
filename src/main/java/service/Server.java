@@ -2,7 +2,6 @@ package service;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
@@ -18,7 +17,8 @@ import utils.DocumentBuilder;
 import utils.Parser;
 import utils.QueryBuilder;
 
-import javax.print.Doc;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 import static spark.Spark.get;
@@ -76,11 +76,11 @@ public class Server {
             try {
                 km = Integer.parseInt(data.get("radius"));
                 lat = Double.parseDouble(data.get("lat"));
-                longi = Double.parseDouble(data.get("long"));
+                longi = Double.parseDouble(data.get("longi"));
                 if(km <= 0)
                     throw new Exception();
             } catch (Exception e){
-                response1.body("Bad arguments. Please provide radius, lat and long\n");
+                response1.body("Bad arguments. Please provide radius, lat and longi\n");
                 return response1.body();
             }
 
@@ -88,7 +88,20 @@ public class Server {
             JsonArray ret = new JsonArray();
             try (MongoCursor<Document> cursor = meepCol.find(jobj3).iterator()) {
                 while (cursor.hasNext()) {
-                    ret.add(cursor.next().toJson());
+                    Document docAux = cursor.next();
+                    ObjectId id = (ObjectId) docAux.get("_id");
+                    Meep aux = Parser.parseMeep(docAux.toJson());
+                    JsonObject aux2 = new JsonObject();
+                    aux2.addProperty("message", aux.message);
+                    aux2.addProperty("senderName", aux.sender);
+                    aux2.addProperty("objectId", id.toHexString());
+                    String createdAt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(id.getTimestamp() * 1000L));
+                    aux2.addProperty("createdAt", createdAt);
+                    aux2.addProperty("updatedAt", createdAt);
+                    aux2.addProperty("public", aux.isPublic);
+                    aux2.addProperty("latitude", aux.lat);
+                    aux2.addProperty("longitude", aux.longi);
+                    ret.add(aux2.getAsJsonObject());
                 }
             }
             response1.body(ret.toString() + "\n");

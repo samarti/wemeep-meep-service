@@ -1,6 +1,7 @@
 package utils;
 
 import com.google.gson.Gson;
+import model.Circle;
 import model.Meep;
 
 import java.io.UnsupportedEncodingException;
@@ -18,6 +19,10 @@ public class Parser {
 
     public static Meep parseMeep(String json){
         return gson.fromJson(json, Meep.class);
+    }
+
+    public static Circle parseCircle(String json){
+        return gson.fromJson(json, Circle.class);
     }
 
     public static Map<String, String> splitQuery(String query) throws UnsupportedEncodingException {
