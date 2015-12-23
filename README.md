@@ -68,7 +68,6 @@ Data: { body: { sender:<someUserId>, message:<someString>, ... } }
 | type        | String    |
 | receipts    | Number    |
 | isPublic      | Boolean   |
-| isRoot      | Boolean   |
 | picture     | URL       |
 | lat     | Long       |
 | longi     | Long       |
