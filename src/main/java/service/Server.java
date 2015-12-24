@@ -80,7 +80,6 @@ public class Server {
             String id = request.params(":id");
             BasicDBObject query = new BasicDBObject();
             query.put("_id", new ObjectId(id));
-            //query.put("comments", true);
             BasicDBObject slicer = new BasicDBObject();
             slicer.append("$slice", new int[]{0, 5});
             BasicDBObject comments = new BasicDBObject();
@@ -92,17 +91,22 @@ public class Server {
             JsonArray ret = parser.parse(meepAux.toJson()).getAsJsonObject().getAsJsonArray("comments");
             JsonArray ret2 = new JsonArray();
             Iterator<JsonElement> it = ret.iterator();
+            //TODO Muy mejorable (hacer query solo de los comentarios pedidos, no pedirlos todos)
+            int index = 0;
             while(it.hasNext()){
                 JsonElement com = it.next();
-                Document docAux = Document.parse(com.toString());
-                Comment aux = Parser.parseComment(docAux.toJson());
-                JsonObject aux2 = new JsonObject();
-                aux2.addProperty("message", aux.message);
-                aux2.addProperty("senderName", aux.sender);
-                aux2.addProperty("senderId", aux.senderId);
-                aux2.addProperty("createdAt", aux.createdAt);
-                aux2.addProperty("updatedAt", aux.updatedAt);
-                ret2.add(aux2.getAsJsonObject());
+                if(index >= offset && index < offset + limit){
+                    Document docAux = Document.parse(com.toString());
+                    Comment aux = Parser.parseComment(docAux.toJson());
+                    JsonObject aux2 = new JsonObject();
+                    aux2.addProperty("message", aux.message);
+                    aux2.addProperty("senderName", aux.sender);
+                    aux2.addProperty("senderId", aux.senderId);
+                    aux2.addProperty("createdAt", aux.createdAt);
+                    aux2.addProperty("updatedAt", aux.updatedAt);
+                    ret2.add(aux2.getAsJsonObject());
+                }
+                index++;
             }
             response.body(ret2.toString() + "\n");
             return response.body();
@@ -171,7 +175,7 @@ public class Server {
             String id = request.params(":id");
             JsonObject res = new JsonObject();
             Comment ob = Parser.parseComment(request.body());
-            if(!Validator.validateComment(ob)){
+            if (!Validator.validateComment(ob)) {
                 res.addProperty("Error", "Missing fields");
                 response.body(res.toString());
                 return response.body();
