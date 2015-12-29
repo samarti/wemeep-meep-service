@@ -164,9 +164,9 @@ public class Server {
                 return response.body();
             }
             Document meep = DocumentBuilder.meepDocumentBuilder(obj);
+            meepCol.insertOne(meep);
             ObjectId id = (ObjectId) meep.get("_id");
             String createdAt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(id.getTimestamp() * 1000L));
-            meepCol.insertOne(meep);
             res.addProperty("id", meep.getObjectId("_id").toString());
             res.addProperty("createdAt", createdAt);
             response.body(res.toString() + "\n");
