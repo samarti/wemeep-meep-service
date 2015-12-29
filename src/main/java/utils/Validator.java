@@ -13,7 +13,7 @@ public class Validator {
                 m.lat == 0.0 ||
                 m.longi == 0.0 ||
                 m.message == null ||
-                m.sender == null ||
+                m.senderName == null ||
                 m.receipts == null ||
                 m.senderId == null)
             return false;
