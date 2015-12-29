@@ -139,7 +139,7 @@ public class Server {
                     Meep aux = Parser.parseMeep(docAux.toJson(), true);
                     JsonObject aux2 = new JsonObject();
                     aux2.addProperty("message", aux.message);
-                    aux2.addProperty("senderName", aux.sender);
+                    aux2.addProperty("senderName", aux.senderName);
                     aux2.addProperty("objectId", id.toHexString());
                     String createdAt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(id.getTimestamp() * 1000L));
                     aux2.addProperty("createdAt", createdAt);
