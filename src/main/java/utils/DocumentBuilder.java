@@ -17,6 +17,7 @@ public class DocumentBuilder {
     public static Document meepDocumentBuilder(Meep arg){
         Document meep = new Document();
         meep.append("senderName", arg.senderName);
+        meep.append("senderId", arg.senderId);
         meep.append("message", arg.message);
         meep.append("type", arg.type);
         meep.append("isRoot", arg.isRoot);
