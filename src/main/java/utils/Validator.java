@@ -23,7 +23,7 @@ public class Validator {
     public static boolean validateComment(Comment c){
         if(c.message == null ||
                 c.senderId == null ||
-                c.sender == null)
+                c.senderName == null)
             return false;
         return true;
     }

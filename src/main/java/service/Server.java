@@ -100,7 +100,7 @@ public class Server {
                     Comment aux = Parser.parseComment(docAux.toJson());
                     JsonObject aux2 = new JsonObject();
                     aux2.addProperty("message", aux.message);
-                    aux2.addProperty("senderName", aux.sender);
+                    aux2.addProperty("senderName", aux.senderName);
                     aux2.addProperty("senderId", aux.senderId);
                     aux2.addProperty("createdAt", aux.createdAt);
                     aux2.addProperty("updatedAt", aux.updatedAt);

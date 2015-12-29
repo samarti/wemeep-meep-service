@@ -16,7 +16,7 @@ public class DocumentBuilder {
 
     public static Document meepDocumentBuilder(Meep arg){
         Document meep = new Document();
-        meep.append("sender", arg.senderName);
+        meep.append("senderName", arg.senderName);
         meep.append("message", arg.message);
         meep.append("type", arg.type);
         meep.append("isRoot", arg.isRoot);
@@ -41,7 +41,7 @@ public class DocumentBuilder {
     public static Document commentDocumentBuilder(Comment arg){
         Document comment = new Document();
         String createdAt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(System.currentTimeMillis()));
-        comment.append("senderName", arg.sender);
+        comment.append("senderName", arg.senderName);
         comment.append("senderId", arg.senderId);
         comment.append("message", arg.message);
         comment.append("createdAt", createdAt);
