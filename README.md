@@ -79,7 +79,7 @@ Data: { body: { sender:<someUserId>, message:<someString>, ... } }
 ##### Comment
 |Field   |Values   |
 |---|---|
-| sender  | String  |
+| senderName  | String  |
 | senderId   | String |
 | message     | String    |
 | updatedAt | Timestamp |
