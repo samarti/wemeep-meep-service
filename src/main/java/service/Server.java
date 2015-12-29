@@ -147,6 +147,7 @@ public class Server {
                     aux2.addProperty("public", aux.isPublic);
                     aux2.addProperty("latitude", aux.lat);
                     aux2.addProperty("longitude", aux.longi);
+                    aux2.addProperty("senderId", aux.senderId);
                     ret.add(aux2.getAsJsonObject());
                 }
             }
