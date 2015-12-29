@@ -62,7 +62,7 @@ Data: { body: { sender:<someUserId>, message:<someString>, ... } }
 ##### Meep
 |  Field      |  Values   |
 | :---------- | :-------- |
-| sender      | String    |
+| senderName      | String    |
 | senderId    | String    |
 | message     | String    |
 | objectId          | String    |
