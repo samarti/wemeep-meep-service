@@ -47,7 +47,7 @@ Returns the meep data
 - Get a meep comments with `GET` at
 
 ```
-http://host:8080/meeps/{id}/comments
+http://host:8080/meeps/{id}/comments&limit=<number>?offset=<number>
 ```
 
 - Add a comment with `POST` at
@@ -62,9 +62,10 @@ Data: { body: { sender:<someUserId>, message:<someString>, ... } }
 ##### Meep
 |  Field      |  Values   |
 | :---------- | :-------- |
-| sender      | String    |
+| senderName      | String    |
+| senderId    | String    |
 | message     | String    |
-| id          | String    |
+| objectId          | String    |
 | type        | String    |
 | receipts    | Number    |
 | isPublic      | Boolean   |
@@ -78,10 +79,9 @@ Data: { body: { sender:<someUserId>, message:<someString>, ... } }
 ##### Comment
 |Field   |Values   |
 |---|---|
-| username  | String  |
-| userId   | String |
+| sender  | String  |
+| senderId   | String |
 | message     | String    |
-| id  | String  |
 | updatedAt | Timestamp |
 | createdAt | Timestamp |
 
