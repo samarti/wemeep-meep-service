@@ -194,8 +194,10 @@ public class Server {
                 response.body(res.toString());
             } else {
                 meepCol.findOneAndUpdate(aux, new Document("$push", new Document("comments", comment)), new FindOneAndUpdateOptions());
+                String createdAt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(System.currentTimeMillis()));
                 JsonObject res2 = new JsonObject();
                 res2.addProperty("Success", true);
+                res2.addProperty("createdAt", createdAt);
                 response.body(res2.toString() + "\n");
             }
             return response.body();
