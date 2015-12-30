@@ -37,7 +37,7 @@ public class Parser {
         if(containsId){
             JsonParser parser = new JsonParser();
             JsonObject original = parser.parse(json).getAsJsonObject();
-            ret.objectId = original.getAsJsonObject("_id").get("$oid").toString();
+            ret.objectId = original.getAsJsonObject("_id").get("$oid").getAsString();
         }
         return ret;
     }
