@@ -104,6 +104,7 @@ public class Server {
                     aux2.addProperty("senderId", aux.senderId);
                     aux2.addProperty("createdAt", aux.createdAt);
                     aux2.addProperty("updatedAt", aux.updatedAt);
+                    aux2.addProperty("id", aux.objectId);
                     ret2.add(aux2.getAsJsonObject());
                 }
                 index++;

@@ -33,7 +33,11 @@ public class Parser {
     }
 
     public static Comment parseComment(String json){
-        return gson.fromJson(json, Comment.class);
+        Comment ret = gson.fromJson(json, Comment.class);
+        JsonParser parser = new JsonParser();
+        JsonObject original = parser.parse(json).getAsJsonObject();
+        ret.objectId = original.getAsJsonObject("_id").get("$oid").toString();
+        return ret;
     }
 
     public static String cleanMeepJson(String json){

@@ -4,6 +4,7 @@ import com.mongodb.BasicDBList;
 import model.Comment;
 import model.Meep;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -42,6 +43,8 @@ public class DocumentBuilder {
     public static Document commentDocumentBuilder(Comment arg){
         Document comment = new Document();
         String createdAt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(System.currentTimeMillis()));
+        ObjectId newId = new ObjectId();
+        comment.append("_id", newId);
         comment.append("senderName", arg.senderName);
         comment.append("senderId", arg.senderId);
         comment.append("message", arg.message);
