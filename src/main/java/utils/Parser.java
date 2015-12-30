@@ -32,11 +32,13 @@ public class Parser {
         return ret;
     }
 
-    public static Comment parseComment(String json){
+    public static Comment parseComment(String json, boolean containsId){
         Comment ret = gson.fromJson(json, Comment.class);
-        JsonParser parser = new JsonParser();
-        JsonObject original = parser.parse(json).getAsJsonObject();
-        ret.objectId = original.getAsJsonObject("_id").get("$oid").toString();
+        if(containsId){
+            JsonParser parser = new JsonParser();
+            JsonObject original = parser.parse(json).getAsJsonObject();
+            ret.objectId = original.getAsJsonObject("_id").get("$oid").toString();
+        }
         return ret;
     }
 

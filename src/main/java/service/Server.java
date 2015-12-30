@@ -97,7 +97,7 @@ public class Server {
                 JsonElement com = it.next();
                 if(index >= offset && index < offset + limit){
                     Document docAux = Document.parse(com.toString());
-                    Comment aux = Parser.parseComment(docAux.toJson());
+                    Comment aux = Parser.parseComment(docAux.toJson(), true);
                     JsonObject aux2 = new JsonObject();
                     aux2.addProperty("message", aux.message);
                     aux2.addProperty("senderName", aux.senderName);
@@ -179,7 +179,7 @@ public class Server {
         post("/meeps/:id/comments", (request, response) -> {
             String id = request.params(":id");
             JsonObject res = new JsonObject();
-            Comment ob = Parser.parseComment(request.body());
+            Comment ob = Parser.parseComment(request.body(), false);
             if (!Validator.validateComment(ob)) {
                 res.addProperty("Error", "Missing fields");
                 response.body(res.toString());
