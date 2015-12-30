@@ -199,6 +199,7 @@ public class Server {
                 JsonObject res2 = new JsonObject();
                 res2.addProperty("Success", true);
                 res2.addProperty("createdAt", createdAt);
+                res2.addProperty("id", comment.get("_id").toString());
                 response.body(res2.toString() + "\n");
             }
             return response.body();
