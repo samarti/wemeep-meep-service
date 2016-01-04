@@ -247,7 +247,7 @@ public class Server {
                         break;
                 }
             if(decider != null) {
-                boolean res = MeepController.updateMeepRegistree(meepCol, id, data.getAsJsonArray("ids"), decider);
+                boolean res = MeepController.updateMeepRegistree(meepCol, id, data.get("ids").getAsJsonArray(), decider);
                 if (!res)
                     red.addProperty("Error", "Meep not found");
                 else
