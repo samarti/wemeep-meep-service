@@ -52,6 +52,7 @@ public class Parser {
         original.remove("location");
         original.remove("receipts");
         original.remove("comments");
+        original.remove("registrees");
         return original.toString();
     }
 

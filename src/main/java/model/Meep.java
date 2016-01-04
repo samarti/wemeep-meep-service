@@ -9,7 +9,7 @@ import java.util.Map;
  */
 public class Meep {
     public String senderName, message, type, picture, objectId, senderId;
-    public List<Map<String, String>> receipts;
+    public List<Map<String, String>> receipts, registrees;
     public double lat, longi;
     public Boolean isPublic, isRoot;
     public Timestamp created_at, updated_at;

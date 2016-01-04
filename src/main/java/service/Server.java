@@ -30,6 +30,8 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 
 import static com.mongodb.client.model.Projections.*;
+import static spark.Spark.put;
+
 /**
  * Created by santiagomarti on 12/11/15.
  */
@@ -202,6 +204,56 @@ public class Server {
                 res2.addProperty("id", comment.get("_id").toString());
                 response.body(res2.toString() + "\n");
             }
+            return response.body();
+        });
+
+        get("/meeps/:id/registrees", (request, response) -> {
+            String id = request.params(":id");
+            BasicDBObject query = new BasicDBObject();
+            query.put("_id", new ObjectId(id));
+            FindIterable<Document> dbObj = meepCol.find(query);
+            Document aux = dbObj.first();
+            JsonObject red = new JsonObject();
+            red.addProperty("Error", "Meep not found");
+            if(aux == null)
+                response.body(red.toString() + "\n");
+            else {
+                JsonParser parser = new JsonParser();
+                JsonArray ret = parser.parse(aux.toJson()).getAsJsonObject().getAsJsonArray("registrees");
+                response.body(ret.toString());
+            }
+            return response.body();
+        });
+
+        put("/meeps/:id/registrees", (request, response) -> {
+            JsonParser parser = new JsonParser();
+            JsonObject data = parser.parse(request.body()).getAsJsonObject();
+            JsonObject red = new JsonObject();
+            String id = request.params(":id");
+            Boolean decider = false;
+            if(data.get("ids") == null)
+                red.addProperty("Error", "Ids missing");
+            else
+                switch (data.get("type").getAsString()){
+                    case "add":
+                        decider = true;
+                        break;
+                    case "remove":
+                        decider = false;
+                        break;
+                    default:
+                        decider = null;
+                        red.addProperty("Error", "Type not defined");
+                        break;
+                }
+            if(decider != null) {
+                boolean res = MeepController.updateMeepRegistree(meepCol, id, data.getAsJsonArray("ids"), decider);
+                if (!res)
+                    red.addProperty("Error", "Meep not found");
+                else
+                    red.addProperty("Success", "Registrees updated");
+            }
+            response.body(red.toString());
             return response.body();
         });
     }

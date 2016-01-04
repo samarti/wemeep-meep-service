@@ -6,7 +6,6 @@ import model.Meep;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -36,6 +35,8 @@ public class DocumentBuilder {
         meep.append("comments", comments);
         BasicDBList receipts = new BasicDBList();
         meep.append("receipts", receipts);
+        BasicDBList registrees = new BasicDBList();
+        meep.append("registrees", registrees);
         meep.append("isPublic", arg.isPublic);
         return meep;
     }

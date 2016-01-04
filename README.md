@@ -57,6 +57,20 @@ http://host:8080/meeps/{id}/comments
 
 Data: { body: { sender:<someUserId>, message:<someString>, ... } }
 ```
+- Get a meep registrees with `GET` at
+
+```
+http://host:8080/meeps/{id}/registrees
+
+Returns the meep registrees as an array
+```
+- Change registree situation with `PUT`
+
+```
+http://host:8080/meeps/{id}/registrees
+
+Data: { body: { type:<"add" or "remove">, ids:[id: <registree id>, id: <registree id>, ...]} }
+```
 ### Data model
 #### Objects
 ##### Meep
@@ -67,14 +81,14 @@ Data: { body: { sender:<someUserId>, message:<someString>, ... } }
 | message     | String    |
 | objectId          | String    |
 | type        | String    |
-| receipts    | Number    |
+| receipts    | Array<Comment>    |
 | isPublic      | Boolean   |
 | picture     | URL       |
 | lat     | Long       |
 | longi     | Long       |
 | updatedAt   | Timestamp |
 | createdAt   | Timestamp |
-| comments    | Array<Comment> |
+| registrees   | Array<User> |
 
 ##### Comment
 |Field   |Values   |
