@@ -23,7 +23,7 @@ public class MeepController {
             return false;
         } else {
             for(JsonElement el : registrees){
-                col.findOneAndUpdate(aux, new Document(add ? "$push" : "$pull", new Document("registrees", el.getAsJsonObject().get("id").getAsString())), new FindOneAndUpdateOptions());
+                col.findOneAndUpdate(aux, new Document(add ? "$push" : "$pull", new Document("registrees", new Document("id", el.getAsJsonObject().get("id").getAsString()))), new FindOneAndUpdateOptions());
             }
             return true;
         }
