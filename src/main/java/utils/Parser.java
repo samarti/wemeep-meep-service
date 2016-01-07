@@ -7,9 +7,13 @@ import com.google.gson.JsonParser;
 import model.Circle;
 import model.Comment;
 import model.Meep;
+import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -42,7 +46,8 @@ public class Parser {
         return ret;
     }
 
-    public static String cleanMeepJson(String json){
+    public static String cleanMeepJson(Document doc){
+        String json = doc.toJson();
         JsonParser parser = new JsonParser();
         JsonObject original = parser.parse(json).getAsJsonObject();
         original.add("objectId", original.getAsJsonObject("_id").get("$oid"));
@@ -53,6 +58,9 @@ public class Parser {
         original.remove("receipts");
         original.remove("comments");
         original.remove("registrees");
+        ObjectId objId = (ObjectId) doc.get("_id");
+        String createdAt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(objId.getTimestamp() * 1000L));
+        original.addProperty("createdAt", createdAt);
         return original.toString();
     }
 

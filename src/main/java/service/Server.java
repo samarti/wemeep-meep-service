@@ -56,13 +56,10 @@ public class Server {
             Document aux = dbObj.first();
             JsonObject red = new JsonObject();
             red.addProperty("Error", "Meep not found");
-            ObjectId objId = (ObjectId) aux.get("_id");
-            String createdAt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(objId.getTimestamp() * 1000L));
-            red.addProperty("createdAt", createdAt);
             if(aux == null)
                 response.body(red.toString() + "\n");
             else
-                response.body(Parser.cleanMeepJson(aux.toJson()));
+                response.body(Parser.cleanMeepJson(aux));
             return response.body();
         });
 
