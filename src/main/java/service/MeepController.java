@@ -23,7 +23,7 @@ public class MeepController {
             return false;
         } else {
             for(JsonElement el : registrees){
-                col.findOneAndUpdate(aux, new Document(add ? "$push" : "$pull", new Document("registrees", new Document("id", el.getAsJsonObject().get("id").getAsString()))), new FindOneAndUpdateOptions());
+                aux = col.findOneAndUpdate(aux, new Document(add ? "$push" : "$pull", new Document("registrees", new Document("id", el.getAsJsonObject().get("id").getAsString()))), new FindOneAndUpdateOptions());
             }
             return true;
         }
@@ -32,13 +32,11 @@ public class MeepController {
     public static void addMeepsReceipts(MongoCollection<Document> col, String meepId, JsonArray receipts){
         BasicDBObject query = new BasicDBObject();
         query.put("_id", new ObjectId(meepId));
-        System.out.println(receipts.toString());
         FindIterable<Document> dbObj = col.find(query);
         Document aux = dbObj.first();
         if (aux != null) {
             for(JsonElement el : receipts){
-                System.out.println("HOLA");
-                col.findOneAndUpdate(aux, new Document("$push", new Document("receipts", new Document("id", el.getAsJsonObject().get("id").getAsString()))), new FindOneAndUpdateOptions());
+                aux = col.findOneAndUpdate(aux, new Document("$push", new Document("receipts", new Document("id", el.getAsJsonObject().get("id").getAsString()))), new FindOneAndUpdateOptions());
             }
         }
     }
