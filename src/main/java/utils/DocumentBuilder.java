@@ -8,6 +8,7 @@ import org.bson.types.ObjectId;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * Created by santiagomarti on 12/14/15.
@@ -36,6 +37,9 @@ public class DocumentBuilder {
         BasicDBList receipts = new BasicDBList();
         meep.append("receipts", receipts);
         BasicDBList registrees = new BasicDBList();
+        for(Map<String, String> el : arg.receipts){
+            registrees.put("id", el.get("id"));
+        }
         meep.append("registrees", registrees);
         meep.append("isPublic", arg.isPublic);
         return meep;
