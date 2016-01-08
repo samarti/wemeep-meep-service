@@ -30,6 +30,7 @@ public class MeepController {
     }
 
     public static void addMeepsReceipts(MongoCollection<Document> col, String meepId, JsonArray receipts){
+        System.out.println(receipts.toString());
         BasicDBObject query = new BasicDBObject();
         query.put("_id", new ObjectId(meepId));
         FindIterable<Document> dbObj = col.find(query);
