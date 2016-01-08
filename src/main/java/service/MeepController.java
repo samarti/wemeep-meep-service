@@ -6,6 +6,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.FindOneAndUpdateOptions;
+import com.mongodb.client.model.ReturnDocument;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
@@ -36,7 +37,7 @@ public class MeepController {
         Document aux = dbObj.first();
         if (aux != null) {
             for(JsonElement el : receipts){
-                aux = col.findOneAndUpdate(aux, new Document("$push", new Document("receipts", new Document("id", el.getAsJsonObject().get("id").getAsString()))), new FindOneAndUpdateOptions());
+                aux = col.findOneAndUpdate(aux, new Document("$push", new Document("receipts", new Document("id", el.getAsJsonObject().get("id").getAsString()))), new FindOneAndUpdateOptions().returnDocument(ReturnDocument.AFTER));
             }
         }
     }
