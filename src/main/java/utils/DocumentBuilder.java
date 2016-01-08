@@ -1,6 +1,8 @@
 package utils;
 
 import com.mongodb.BasicDBList;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 import model.Comment;
 import model.Meep;
 import org.bson.Document;
@@ -39,11 +41,6 @@ public class DocumentBuilder {
         BasicDBList receipts = new BasicDBList();
         meep.append("receipts", receipts);
         BasicDBList registrees = new BasicDBList();
-        Iterator<HashMap<String, String>> it = arg.receipts.iterator();
-        while(it.hasNext()){
-            HashMap<String, String> aux = it.next();
-            registrees.put("id", aux.entrySet().iterator().next().getValue());
-        }
         meep.append("registrees", registrees);
         meep.append("isPublic", arg.isPublic);
         return meep;

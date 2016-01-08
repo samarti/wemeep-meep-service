@@ -28,4 +28,16 @@ public class MeepController {
             return true;
         }
     }
+
+    public static void addMeepsReceipts(MongoCollection<Document> col, String meepId, JsonArray receipts){
+        BasicDBObject query = new BasicDBObject();
+        query.put("_id", new ObjectId(meepId));
+        FindIterable<Document> dbObj = col.find(query);
+        Document aux = dbObj.first();
+        if (aux != null) {
+            for(JsonElement el : receipts){
+                col.findOneAndUpdate(aux, new Document("$push", new Document("receipts", new Document("id", el.getAsJsonObject().get("id").getAsString()))), new FindOneAndUpdateOptions());
+            }
+        }
+    }
 }

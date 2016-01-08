@@ -170,6 +170,11 @@ public class Server {
             Document meep = DocumentBuilder.meepDocumentBuilder(obj);
             meepCol.insertOne(meep);
             ObjectId id = (ObjectId) meep.get("_id");
+            JsonParser parser = new JsonParser();
+            JsonObject meepAux = parser.parse(request.body()).getAsJsonObject();
+            if(meepAux.has("receipts")){
+                MeepController.addMeepsReceipts(meepCol, id.toHexString(), meepAux.getAsJsonArray("receipts"));
+            }
             String createdAt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(id.getTimestamp() * 1000L));
             res.addProperty("id", meep.getObjectId("_id").toString());
             res.addProperty("createdAt", createdAt);
@@ -265,7 +270,7 @@ public class Server {
             Document aux = dbObj.first();
             JsonObject red = new JsonObject();
             red.addProperty("Error", "Meep not found");
-            if(aux == null)
+            if (aux == null)
                 response.body(red.toString() + "\n");
             else {
                 JsonParser parser = new JsonParser();
