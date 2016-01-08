@@ -172,7 +172,6 @@ public class Server {
             ObjectId id = (ObjectId) meep.get("_id");
             JsonParser parser = new JsonParser();
             JsonObject meepAux = parser.parse(request.body()).getAsJsonObject();
-            System.out.println(meepAux.toString());
             if(meepAux.has("receipts")){
                 MeepController.addMeepsReceipts(meepCol, id.toHexString(), meepAux.getAsJsonArray("receipts"));
             }
