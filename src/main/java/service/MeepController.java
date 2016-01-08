@@ -24,7 +24,7 @@ public class MeepController {
             return false;
         } else {
             for(JsonElement el : registrees){
-                aux = col.findOneAndUpdate(aux, new Document(add ? "$push" : "$pull", new Document("registrees", new Document("id", el.getAsJsonObject().get("id").getAsString()))), new FindOneAndUpdateOptions());
+                aux = col.findOneAndUpdate(aux, new Document(add ? "$push" : "$pull", new Document("registrees", new Document("id", el.getAsJsonObject().get("id").getAsString()))), new FindOneAndUpdateOptions().returnDocument(ReturnDocument.AFTER));
             }
             return true;
         }
