@@ -256,5 +256,23 @@ public class Server {
             response.body(red.toString());
             return response.body();
         });
+
+        get("/meeps/:id/receipts", (request, response) -> {
+            String id = request.params(":id");
+            BasicDBObject query = new BasicDBObject();
+            query.put("_id", new ObjectId(id));
+            FindIterable<Document> dbObj = meepCol.find(query);
+            Document aux = dbObj.first();
+            JsonObject red = new JsonObject();
+            red.addProperty("Error", "Meep not found");
+            if(aux == null)
+                response.body(red.toString() + "\n");
+            else {
+                JsonParser parser = new JsonParser();
+                JsonArray ret = parser.parse(aux.toJson()).getAsJsonObject().getAsJsonArray("receipts");
+                response.body(ret.toString());
+            }
+            return response.body();
+        });
     }
 }
