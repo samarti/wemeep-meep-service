@@ -8,6 +8,8 @@ import org.bson.types.ObjectId;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -37,8 +39,10 @@ public class DocumentBuilder {
         BasicDBList receipts = new BasicDBList();
         meep.append("receipts", receipts);
         BasicDBList registrees = new BasicDBList();
-        for(Map<String, String> el : arg.receipts){
-            registrees.put("id", el.get("id"));
+        Iterator<HashMap<String, String>> it = arg.receipts.iterator();
+        while(it.hasNext()){
+            HashMap<String, String> aux = it.next();
+            registrees.put("id", aux.entrySet().iterator().next().getValue());
         }
         meep.append("registrees", registrees);
         meep.append("isPublic", arg.isPublic);
