@@ -26,8 +26,8 @@ public class QueryBuilder {
         if(secret){
             BasicDBObject jobj4 = new BasicDBObject();
             BasicDBObject[] list = new BasicDBObject[1];
-            list[1] = new BasicDBObject();
-            list[1].put("id", id);
+            list[0] = new BasicDBObject();
+            list[0].put("id", id);
             jobj4.append("$in", list);
             jobj3.append("receipts", jobj4);
         }
