@@ -127,8 +127,11 @@ public class Server {
                 lat = Double.parseDouble(data.get("lat"));
                 longi = Double.parseDouble(data.get("longi"));
                 secret = Boolean.parseBoolean(data.get("secret"));
-                if(secret)
+                if(secret) {
+                    if(!data.containsKey("id"))
+                        throw new Exception();
                     idSt = data.get("id");
+                }
                 if(km <= 0)
                     throw new Exception();
             } catch (Exception e){
