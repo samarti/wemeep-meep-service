@@ -25,8 +25,9 @@ public class QueryBuilder {
         jobj3.append("isPublic", secret);
         if(secret){
             BasicDBObject jobj4 = new BasicDBObject();
-            BasicDBList list = new BasicDBList();
-            list.put("id", id);
+            BasicDBObject[] list = new BasicDBObject[1];
+            list[1] = new BasicDBObject();
+            list[1].put("id", id);
             jobj4.append("$in", list);
             jobj3.append("receipts", jobj4);
         }
