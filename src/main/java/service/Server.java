@@ -119,21 +119,26 @@ public class Server {
         get("/meeps", (request1, response1) -> {
             int km;
             double lat, longi;
+            String idSt = null;
+            boolean secret = false;
             try {
                 Map<String, String> data = Parser.splitQuery(request1.queryString());
                 km = Integer.parseInt(data.get("radius"));
                 lat = Double.parseDouble(data.get("lat"));
                 longi = Double.parseDouble(data.get("longi"));
+                secret = Boolean.parseBoolean(data.get("secret"));
+                if(secret)
+                    idSt = data.get("id");
                 if(km <= 0)
                     throw new Exception();
             } catch (Exception e){
                 JsonObject red = new JsonObject();
-                red.addProperty("Error", "Bad arguments. Please provide radius, lat and longi");
+                red.addProperty("Error", "Bad arguments. Please provide radius, lat, longi and \"secret\":true|false. For secret meeps add id also.");
                 response1.body(red.toString() + "\n");
                 return response1.body();
             }
 
-            BasicDBObject jobj3 = QueryBuilder.getMeepOnRangeQuery(lat, longi, km);
+            BasicDBObject jobj3 = QueryBuilder.getMeepOnRangeQuery(lat, longi, km, secret, idSt);
             JsonArray ret = new JsonArray();
             try (MongoCursor<Document> cursor = meepCol.find(jobj3).iterator()) {
                 while (cursor.hasNext()) {

@@ -21,10 +21,12 @@ Set:
 
 ### WebService
 The web service exposes the following methods:
-- Get close meeps with `GET` at
+- Get close meeps with `GET`, secret or public, at
 
 ```
-http://host:8080/meeps?radius=<some km dist>&lat=<lat>&longi=<long>
+http://host:8080/meeps?radius=<some km dist>&lat=<lat>&longi=<long>&secret=<boolean>
+
+If secret:true, you must provide an id also
 
 Returns meeps close to the position on a radius
 ```

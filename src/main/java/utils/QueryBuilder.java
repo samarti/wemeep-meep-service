@@ -9,7 +9,7 @@ import com.mongodb.DBObject;
  */
 public class QueryBuilder {
 
-    public static BasicDBObject getMeepOnRangeQuery(double lat, double longi, int radius){
+    public static BasicDBObject getMeepOnRangeQuery(double lat, double longi, int radius, boolean secret, String id){
         BasicDBList list1 = new BasicDBList();
         list1.add(longi);
         list1.add(lat);
@@ -22,7 +22,14 @@ public class QueryBuilder {
         jobj2.append("$geoWithin", jobj);
         BasicDBObject jobj3 = new BasicDBObject();
         jobj3.append("location",jobj2);
-        jobj3.append("isPublic", true);
+        jobj3.append("isPublic", secret);
+        if(secret){
+            BasicDBObject jobj4 = new BasicDBObject();
+            BasicDBList list = new BasicDBList();
+            list.put("id", id);
+            jobj4.append("$in", list);
+            jobj3.append("receipts", jobj4);
+        }
         return jobj3;
     }
 }
