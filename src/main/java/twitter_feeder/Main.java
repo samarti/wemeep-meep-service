@@ -83,10 +83,10 @@ public class Main {
         meep.append("message", arg.getAsJsonPrimitive("text").getAsString());
         meep.append("type", "tweet");
         meep.append("isRoot", true);
-        if(arg.getAsJsonObject("entities").has("media"))
+        /*if(arg.getAsJsonObject("entities").has("media"))
             meep.append("picture", arg.getAsJsonObject("entities").getAsJsonObject("media").get("media_url").getAsString());
-        else
-            meep.append("picture", null);
+        else*/
+        meep.append("picture", null);
         BasicDBList list = new BasicDBList();
         list.add(arg.getAsJsonObject("coordinates").getAsJsonArray("coordinates").get(0).getAsDouble());
         list.add(arg.getAsJsonObject("coordinates").getAsJsonArray("coordinates").get(1).getAsDouble());
