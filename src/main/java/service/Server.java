@@ -16,6 +16,7 @@ import model.Comment;
 import model.Meep;
 import org.bson.Document;
 import org.bson.types.ObjectId;
+import twitter_feeder.Main;
 import utils.DocumentBuilder;
 import utils.Parser;
 import utils.QueryBuilder;
@@ -38,7 +39,7 @@ import static spark.Spark.put;
 public class Server {
 
     //static MongoClient client = new MongoClient("192.168.99.100", 27017);
-    static MongoClient client = new MongoClient("dbmeep", 27017);
+    static MongoClient client  = new MongoClient("dbmeep", 27017);
     static MongoDatabase database = client.getDatabase("local");
     static MongoCollection<Document> meepCol = database.getCollection("meeps");
 
@@ -285,6 +286,13 @@ public class Server {
                 JsonArray ret = parser.parse(aux.toJson()).getAsJsonObject().getAsJsonArray("receipts");
                 response.body(ret.toString());
             }
+            return response.body();
+        });
+
+        get("/seed", (request, response) -> {
+            Main main = new Main();
+            main.init(meepCol);
+            response.body("Received");
             return response.body();
         });
     }
