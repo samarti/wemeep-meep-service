@@ -4,6 +4,8 @@ import com.google.common.collect.Lists;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mongodb.BasicDBList;
+import com.mongodb.BasicDBObject;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.twitter.hbc.ClientBuilder;
 import com.twitter.hbc.core.Constants;
@@ -24,6 +26,8 @@ import java.util.concurrent.TimeUnit;
  * Created by santiagomarti on 1/11/16.
  */
 public class Main {
+
+    private static final int MIN_MEEP_DISTANCE = 50;
 
     public void init(MongoCollection<Document> meepCol) {
         BlockingQueue<String> queue = new LinkedBlockingQueue<>(10000);
@@ -62,7 +66,7 @@ public class Main {
                 System.out.println("Did not receive a message in 10 seconds");
             } else {
                 JsonObject aux = parser.parse(msg).getAsJsonObject();
-                Document meep = meepDocumentBuilder(aux);
+                Document meep = meepDocumentBuilder(aux, meepCol);
                 if(meep != null){
                     validParsedMeeps++;
                     meepCol.insertOne(meep);
@@ -73,10 +77,18 @@ public class Main {
         System.out.printf("The client read %d messages!\n", client.getStatsTracker().getNumMessages());
     }
 
-    public static Document meepDocumentBuilder(JsonObject arg){
+    public static Document meepDocumentBuilder(JsonObject arg, MongoCollection<Document> meepCol){
         Document meep = new Document();
         if(arg.get("coordinates").isJsonNull())
             return null;
+        double longi = arg.getAsJsonObject("coordinates").getAsJsonArray("coordinates").get(0).getAsDouble();
+        double lat = arg.getAsJsonObject("coordinates").getAsJsonArray("coordinates").get(1).getAsDouble();
+        BasicDBObject aux = getCloseMeepsQuery(lat, longi);
+        FindIterable<Document> auxCol = meepCol.find(aux);
+        if(auxCol.first() != null) {
+            System.out.println("Received valid tweet but too close to another");
+            return null;
+        }
         System.out.println("Received valid tweet");
         meep.append("senderName", arg.getAsJsonObject("user").getAsJsonPrimitive("screen_name").getAsString());
         meep.append("senderId", arg.getAsJsonObject("user").getAsJsonPrimitive("id").getAsInt());
@@ -88,8 +100,8 @@ public class Main {
         else*/
         meep.append("picture", null);
         BasicDBList list = new BasicDBList();
-        list.add(arg.getAsJsonObject("coordinates").getAsJsonArray("coordinates").get(0).getAsDouble());
-        list.add(arg.getAsJsonObject("coordinates").getAsJsonArray("coordinates").get(1).getAsDouble());
+        list.add(longi);
+        list.add(lat);
         Document jobj = new Document();
         jobj.append("type", "Point");
         jobj.append("coordinates", list);
@@ -103,5 +115,23 @@ public class Main {
         meep.append("registrees", registrees);
         meep.append("isPublic", true);
         return meep;
+    }
+
+    public static BasicDBObject getCloseMeepsQuery(double lat, double longi){
+        BasicDBList coords = new BasicDBList();
+        coords.add(longi);
+        coords.add(lat);
+
+        BasicDBObject geo = new BasicDBObject();
+        geo.append("type", "Point");
+        geo.append("coordinates", coords);
+
+        BasicDBObject near = new BasicDBObject();
+        near.append("$near", geo);
+        near.append("$maxDistance", MIN_MEEP_DISTANCE);
+
+        BasicDBObject loc = new BasicDBObject();
+        loc.append("location",near);
+        return loc;
     }
 }
