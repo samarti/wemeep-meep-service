@@ -22,7 +22,7 @@ public class QueryBuilder {
         jobj2.append("$geoWithin", jobj);
         BasicDBObject jobj3 = new BasicDBObject();
         jobj3.append("location",jobj2);
-        jobj3.append("isPublic", secret);
+        jobj3.append("isPublic", !secret);
         if(secret){
             BasicDBObject jobj4 = new BasicDBObject();
             BasicDBObject[] list = new BasicDBObject[1];
