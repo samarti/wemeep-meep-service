@@ -79,7 +79,7 @@ public class Main {
             return null;
         System.out.println("Received valid tweet");
         meep.append("senderName", arg.getAsJsonObject("user").getAsJsonPrimitive("screen_name").getAsString());
-        meep.append("senderId", arg.getAsJsonObject("user").getAsJsonPrimitive("id").getAsLong());
+        meep.append("senderId", arg.getAsJsonObject("user").getAsJsonPrimitive("id").getAsInt());
         meep.append("message", arg.getAsJsonPrimitive("text").getAsString());
         meep.append("type", "tweet");
         meep.append("isRoot", true);
