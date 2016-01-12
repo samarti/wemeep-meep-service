@@ -290,8 +290,14 @@ public class Server {
         });
 
         get("/seed", (request, response) -> {
-            Main main = new Main();
-            main.init(meepCol);
+            Thread t = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Main main = new Main();
+                    main.init(meepCol);
+                }
+            });
+            t.run();
             response.body("Received");
             return response.body();
         });
