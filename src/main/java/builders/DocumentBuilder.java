@@ -1,4 +1,4 @@
-package utils;
+package builders;
 
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
@@ -34,14 +34,19 @@ public class DocumentBuilder {
         Document jobj = new Document();
         jobj.append("type", "Point");
         jobj.append("coordinates", list);
-
         meep.append("location", jobj);
+
         BasicDBList comments = new BasicDBList();
         meep.append("comments", comments);
         BasicDBList receipts = new BasicDBList();
         meep.append("receipts", receipts);
         BasicDBList registrees = new BasicDBList();
         meep.append("registrees", registrees);
+        BasicDBList hashtags = new BasicDBList();
+        if(arg.hashtags != null)
+            for(String s : arg.hashtags)
+                hashtags.add(s);
+        meep.append("hashtags", hashtags);
         meep.append("isPublic", arg.isPublic);
         return meep;
     }
@@ -54,6 +59,13 @@ public class DocumentBuilder {
         comment.append("senderName", arg.senderName);
         comment.append("senderId", arg.senderId);
         comment.append("message", arg.message);
+
+        BasicDBList hashtags = new BasicDBList();
+        if(arg.hashtags != null)
+            for(String s : arg.hashtags)
+                hashtags.add(s);
+
+        comment.append("hashtags", hashtags);
         comment.append("createdAt", createdAt);
         comment.append("updatedAt", createdAt);
         return comment;

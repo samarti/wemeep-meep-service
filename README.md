@@ -91,6 +91,7 @@ Data: { body: { type:<"add" or "remove">, ids:[id: <registree id>, id: <registre
 | updatedAt   | Timestamp |
 | createdAt   | Timestamp |
 | registrees   | Array<User> |
+| hashtags  | Array<String> |
 
 ##### Comment
 |Field   |Values   |

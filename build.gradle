@@ -24,4 +24,5 @@ dependencies {
     compile 'org.mongodb:mongo-java-driver:3.0.4'
     compile 'com.google.code.gson:gson:2.4'
     compile 'com.twitter:hbc-core:2.2.0'
+    compile 'com.twitter:twitter-text:1.6.1'
 }

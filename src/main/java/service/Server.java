@@ -1,5 +1,8 @@
 package service;
 
+import builders.DocumentBuilder;
+import builders.JsonBuilder;
+import builders.QueryBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -11,16 +14,15 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.FindOneAndUpdateOptions;
+import controllers.HashtagController;
+import controllers.MeepController;
 import db.DBHelper;
 import model.Comment;
 import model.Meep;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import twitter_feeder.Main;
-import utils.DocumentBuilder;
-import utils.Parser;
-import utils.QueryBuilder;
-import utils.Validator;
+import utils.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -47,7 +49,20 @@ public class Server {
 
         DBHelper.init(meepCol);
 
+        /***********************************/
+        /**                               **/
+        /**                               **/
+        /**              GET              **/
+        /**                               **/
+        /**                               **/
+        /***********************************/
+
+
         get("/", (request, response) -> "WeMeep Meep Service");
+
+        /***********************************/
+        /**              Meep             **/
+        /***********************************/
 
         get("/meeps/:id", (request, response) -> {
             String id = request.params(":id");
@@ -63,6 +78,10 @@ public class Server {
                 response.body(Parser.cleanMeepJson(aux));
             return response.body();
         });
+
+        /***********************************/
+        /**             Comments          **/
+        /***********************************/
 
         //Get a meep comments
         get("/meeps/:id/comments", (request, response) -> {
@@ -101,14 +120,7 @@ public class Server {
                 if(index >= offset && index < offset + limit){
                     Document docAux = Document.parse(com.toString());
                     Comment aux = Parser.parseComment(docAux.toJson(), true);
-                    JsonObject aux2 = new JsonObject();
-                    aux2.addProperty("message", aux.message);
-                    aux2.addProperty("senderName", aux.senderName);
-                    aux2.addProperty("senderId", aux.senderId);
-                    aux2.addProperty("createdAt", aux.createdAt);
-                    aux2.addProperty("updatedAt", aux.updatedAt);
-                    aux2.addProperty("id", aux.objectId);
-                    ret2.add(aux2.getAsJsonObject());
+                    ret2.add(JsonBuilder.buildJsonComment(aux));
                 }
                 index++;
             }
@@ -116,6 +128,9 @@ public class Server {
             return response.body();
         });
 
+        /***********************************/
+        /**              Meeps            **/
+        /***********************************/
 
         get("/meeps", (request1, response1) -> {
             int km;
@@ -149,23 +164,82 @@ public class Server {
                     Document docAux = cursor.next();
                     ObjectId id = (ObjectId) docAux.get("_id");
                     Meep aux = Parser.parseMeep(docAux.toJson(), true);
-                    JsonObject aux2 = new JsonObject();
-                    aux2.addProperty("message", aux.message);
-                    aux2.addProperty("senderName", aux.senderName);
-                    aux2.addProperty("objectId", id.toHexString());
-                    String createdAt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(id.getTimestamp() * 1000L));
-                    aux2.addProperty("createdAt", createdAt);
-                    aux2.addProperty("updatedAt", createdAt);
-                    aux2.addProperty("public", aux.isPublic);
-                    aux2.addProperty("latitude", aux.lat);
-                    aux2.addProperty("longitude", aux.longi);
-                    aux2.addProperty("senderId", aux.senderId);
-                    ret.add(aux2.getAsJsonObject());
+                    ret.add(JsonBuilder.buildJsonMeep(aux, id));
                 }
             }
             response1.body(ret.toString() + "\n");
             return response1.body();
         });
+
+
+        /***********************************/
+        /**           Registrees          **/
+        /***********************************/
+
+
+        get("/meeps/:id/registrees", (request, response) -> {
+            String id = request.params(":id");
+            BasicDBObject query = new BasicDBObject();
+            query.put("_id", new ObjectId(id));
+            FindIterable<Document> dbObj = meepCol.find(query);
+            Document aux = dbObj.first();
+            JsonObject red = new JsonObject();
+            red.addProperty("Error", "Meep not found");
+            if(aux == null)
+                response.body(red.toString() + "\n");
+            else {
+                JsonParser parser = new JsonParser();
+                JsonArray ret = parser.parse(aux.toJson()).getAsJsonObject().getAsJsonArray("registrees");
+                response.body(ret.toString());
+            }
+            return response.body();
+        });
+
+        /***********************************/
+        /**           Receipts            **/
+        /***********************************/
+
+
+        get("/meeps/:id/receipts", (request, response) -> {
+            String id = request.params(":id");
+            BasicDBObject query = new BasicDBObject();
+            query.put("_id", new ObjectId(id));
+            FindIterable<Document> dbObj = meepCol.find(query);
+            Document aux = dbObj.first();
+            JsonObject red = new JsonObject();
+            red.addProperty("Error", "Meep not found");
+            if (aux == null)
+                response.body(red.toString() + "\n");
+            else {
+                JsonParser parser = new JsonParser();
+                JsonArray ret = parser.parse(aux.toJson()).getAsJsonObject().getAsJsonArray("receipts");
+                response.body(ret.toString());
+            }
+            return response.body();
+        });
+
+        get("/seed", (request, response) -> {
+            Runnable r = () -> {
+                Main main = new Main();
+                main.init(meepCol);
+            };
+            new Thread(r).start();
+            response.body("Received");
+            return response.body();
+        });
+
+
+        /***********************************/
+        /**                               **/
+        /**                               **/
+        /**              POST             **/
+        /**                               **/
+        /**                               **/
+        /***********************************/
+
+        /***********************************/
+        /**              Meep             **/
+        /***********************************/
 
         //Create a meep
         post("/meeps", (request, response) -> {
@@ -176,13 +250,15 @@ public class Server {
                 response.body(res.toString() + "\n");
                 return response.body();
             }
+            HashtagController hashtagController = new HashtagController();
+            obj = hashtagController.extractHashtags(obj);
             Document meep = DocumentBuilder.meepDocumentBuilder(obj);
             meepCol.insertOne(meep);
             ObjectId id = (ObjectId) meep.get("_id");
             JsonParser parser = new JsonParser();
             JsonObject meepAux = parser.parse(request.body()).getAsJsonObject();
             if(meepAux.has("receipts")){
-                MeepController.addMeepsReceipts(meepCol, id.toHexString(), meepAux.getAsJsonArray("receipts"));
+                MeepController.insertMeepReceipts(meepCol, id.toHexString(), meepAux.getAsJsonArray("receipts"));
             }
             String createdAt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(id.getTimestamp() * 1000L));
             res.addProperty("id", meep.getObjectId("_id").toString());
@@ -190,6 +266,11 @@ public class Server {
             response.body(res.toString() + "\n");
             return response.body();
         });
+
+
+        /***********************************/
+        /**              Comments         **/
+        /***********************************/
 
         //Add a meep comment
         post("/meeps/:id/comments", (request, response) -> {
@@ -201,6 +282,8 @@ public class Server {
                 response.body(res.toString());
                 return response.body();
             }
+            HashtagController hashtagController = new HashtagController();
+            ob = hashtagController.extractHashtags(ob);
             Document comment = DocumentBuilder.commentDocumentBuilder(ob);
             BasicDBObject query = new BasicDBObject();
             query.put("_id", new ObjectId(id));
@@ -221,23 +304,19 @@ public class Server {
             return response.body();
         });
 
-        get("/meeps/:id/registrees", (request, response) -> {
-            String id = request.params(":id");
-            BasicDBObject query = new BasicDBObject();
-            query.put("_id", new ObjectId(id));
-            FindIterable<Document> dbObj = meepCol.find(query);
-            Document aux = dbObj.first();
-            JsonObject red = new JsonObject();
-            red.addProperty("Error", "Meep not found");
-            if(aux == null)
-                response.body(red.toString() + "\n");
-            else {
-                JsonParser parser = new JsonParser();
-                JsonArray ret = parser.parse(aux.toJson()).getAsJsonObject().getAsJsonArray("registrees");
-                response.body(ret.toString());
-            }
-            return response.body();
-        });
+        /***********************************/
+        /**                               **/
+        /**                               **/
+        /**              PUT              **/
+        /**                               **/
+        /**                               **/
+        /***********************************/
+
+
+        /***********************************/
+        /**            Registrees         **/
+        /***********************************/
+
 
         put("/meeps/:id/registrees", (request, response) -> {
             JsonParser parser = new JsonParser();
@@ -268,34 +347,6 @@ public class Server {
                     red.addProperty("Success", "Registrees updated");
             }
             response.body(red.toString());
-            return response.body();
-        });
-
-        get("/meeps/:id/receipts", (request, response) -> {
-            String id = request.params(":id");
-            BasicDBObject query = new BasicDBObject();
-            query.put("_id", new ObjectId(id));
-            FindIterable<Document> dbObj = meepCol.find(query);
-            Document aux = dbObj.first();
-            JsonObject red = new JsonObject();
-            red.addProperty("Error", "Meep not found");
-            if (aux == null)
-                response.body(red.toString() + "\n");
-            else {
-                JsonParser parser = new JsonParser();
-                JsonArray ret = parser.parse(aux.toJson()).getAsJsonObject().getAsJsonArray("receipts");
-                response.body(ret.toString());
-            }
-            return response.body();
-        });
-
-        get("/seed", (request, response) -> {
-            Runnable r = () -> {
-                Main main = new Main();
-                main.init(meepCol);
-            };
-            new Thread(r).start();
-            response.body("Received");
             return response.body();
         });
     }
