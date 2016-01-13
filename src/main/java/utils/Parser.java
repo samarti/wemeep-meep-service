@@ -48,20 +48,35 @@ public class Parser {
 
     public static String cleanMeepJson(Document doc){
         String json = doc.toJson();
+        ObjectId objId = (ObjectId) doc.get("_id");
+        return cleanMeepJson(json, objId);
+    }
+
+    public static String cleanMeepJson(String json, ObjectId id){
         JsonParser parser = new JsonParser();
         JsonObject original = parser.parse(json).getAsJsonObject();
-        original.add("objectId", original.getAsJsonObject("_id").get("$oid"));
+        original.addProperty("objectId", id.toHexString());
         original.remove("_id");
-        original.addProperty("latitude", original.getAsJsonObject("location").getAsJsonArray("coordinates").get(1).getAsDouble());
-        original.addProperty("longitude", original.getAsJsonObject("location").getAsJsonArray("coordinates").get(0).getAsDouble());
-        original.remove("location");
+        if(original.has("location")) {
+            original.addProperty("latitude", original.getAsJsonObject("location").getAsJsonArray("coordinates").get(1).getAsDouble());
+            original.addProperty("longitude", original.getAsJsonObject("location").getAsJsonArray("coordinates").get(0).getAsDouble());
+            original.remove("location");
+        }
         original.remove("receipts");
         original.remove("comments");
         original.remove("registrees");
-        ObjectId objId = (ObjectId) doc.get("_id");
-        String createdAt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(objId.getTimestamp() * 1000L));
+        String createdAt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(id.getTimestamp() * 1000L));
         original.addProperty("createdAt", createdAt);
         return original.toString();
+    }
+
+    public static JsonObject hardMeepClean(Document doc){
+        String aux = cleanMeepJson(doc);
+        JsonParser parser = new JsonParser();
+        JsonObject original = parser.parse(aux.toString()).getAsJsonObject();
+        JsonObject ret = new JsonObject();
+        ret.addProperty("id", original.get("objectId").getAsString());
+        return ret;
     }
 
     public static Circle parseCircle(String json){

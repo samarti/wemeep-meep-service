@@ -73,6 +73,13 @@ http://host:8080/meeps/{id}/registrees
 
 Data: { body: { type:<"add" or "remove">, ids:[id: <registree id>, id: <registree id>, ...]} }
 ```
+- Search for close public meeps containing the `query` on some hashtag with `GET` at
+
+```
+http://host:8080/searchmeep?radius=<some km dist>&lat=<lat>&longi=<long>&query=<string>
+
+Returns meeps id's close to the position
+```
 ### Data model
 #### Objects
 ##### Meep

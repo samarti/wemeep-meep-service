@@ -22,18 +22,16 @@ import model.Meep;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import twitter_feeder.Main;
-import utils.*;
+import utils.Parser;
+import utils.Validator;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 
-import static spark.Spark.get;
-import static spark.Spark.post;
-
-import static com.mongodb.client.model.Projections.*;
-import static spark.Spark.put;
+import static com.mongodb.client.model.Projections.include;
+import static spark.Spark.*;
 
 /**
  * Created by santiagomarti on 12/11/15.
@@ -133,13 +131,13 @@ public class Server {
         /***********************************/
 
         get("/meeps", (request1, response1) -> {
-            int km;
+            double km;
             double lat, longi;
             String idSt = null;
             boolean secret = false;
             try {
                 Map<String, String> data = Parser.splitQuery(request1.queryString());
-                km = Integer.parseInt(data.get("radius"));
+                km = Double.parseDouble(data.get("radius"));
                 lat = Double.parseDouble(data.get("lat"));
                 longi = Double.parseDouble(data.get("longi"));
                 secret = Boolean.parseBoolean(data.get("secret"));
@@ -199,7 +197,6 @@ public class Server {
         /**           Receipts            **/
         /***********************************/
 
-
         get("/meeps/:id/receipts", (request, response) -> {
             String id = request.params(":id");
             BasicDBObject query = new BasicDBObject();
@@ -217,6 +214,48 @@ public class Server {
             }
             return response.body();
         });
+
+        /***********************************/
+        /**            Search             **/
+        /***********************************/
+
+        get("/searchmeep", (request1, response1) -> {
+            String query = null;
+            double km;
+            double lat, longi;
+            try {
+                Map<String, String> data = Parser.splitQuery(request1.queryString());
+                if(!data.containsKey("query") || !data.containsKey("radius"))
+                    throw new Exception();
+                query = data.get("query");
+                km = Double.parseDouble(data.get("radius"));
+                lat = Double.parseDouble(data.get("lat"));
+                longi = Double.parseDouble(data.get("longi"));
+                if(km < 0 || km > 50)
+                    throw new Exception();
+            } catch (Exception e){
+                JsonObject red = new JsonObject();
+                red.addProperty("Error", "Bad arguments. Please provide query, lat , longi and radius <= 50 && > 0 in km");
+                response1.body(red.toString() + "\n");
+                return response1.body();
+            }
+
+            BasicDBObject jobj3 = QueryBuilder.getMeepsWithHashtagQuery(query, km, lat, longi);
+            JsonArray ret = new JsonArray();
+            try (MongoCursor<Document> cursor = meepCol.find(jobj3).iterator()) {
+                while (cursor.hasNext()) {
+                    Document docAux = cursor.next();
+                    JsonObject jsAux = Parser.hardMeepClean(docAux);
+                    ret.add(jsAux);
+                }
+            }
+            response1.body(ret.toString() + "\n");
+            return response1.body();
+        });
+
+        /***********************************/
+        /**             Seed              **/
+        /***********************************/
 
         get("/seed", (request, response) -> {
             Runnable r = () -> {
