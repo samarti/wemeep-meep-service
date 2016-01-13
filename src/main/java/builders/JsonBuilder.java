@@ -32,7 +32,7 @@ public class JsonBuilder {
         String createdAt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(id.getTimestamp() * 1000L));
         aux2.addProperty("createdAt", createdAt);
         aux2.addProperty("updatedAt", createdAt);
-        aux2.addProperty("public", aux.isPublic);
+        aux2.addProperty("isPublic", aux.isPublic);
         aux2.addProperty("latitude", aux.lat);
         aux2.addProperty("longitude", aux.longi);
         aux2.addProperty("senderId", aux.senderId);
