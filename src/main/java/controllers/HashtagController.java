@@ -16,7 +16,7 @@ public class HashtagController {
         Extractor ex = new Extractor();
         List<String> aux = ex.extractHashtags(meep.message);
         LinkedList<String> ret = new LinkedList<>();
-        aux.addAll(aux);
+        ret.addAll(aux);
         meep.hashtags = ret;
         return meep;
     }
@@ -25,7 +25,7 @@ public class HashtagController {
         Extractor ex = new Extractor();
         List<String> aux = ex.extractHashtags(comment.message);
         LinkedList<String> ret = new LinkedList<>();
-        aux.addAll(aux);
+        ret.addAll(aux);
         comment.hashtags = ret;
         return comment;
     }
