@@ -29,4 +29,12 @@ public class HashtagController {
         comment.hashtags = ret;
         return comment;
     }
+
+    public LinkedList<String> extractHashtags(String arg){
+        Extractor ex = new Extractor();
+        List<String> aux = ex.extractHashtags(arg);
+        LinkedList<String> ret = new LinkedList<>();
+        ret.addAll(aux);
+        return ret;
+    }
 }

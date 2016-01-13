@@ -16,8 +16,10 @@ import com.twitter.hbc.core.processor.StringDelimitedProcessor;
 import com.twitter.hbc.httpclient.BasicClient;
 import com.twitter.hbc.httpclient.auth.Authentication;
 import com.twitter.hbc.httpclient.auth.OAuth1;
+import controllers.HashtagController;
 import org.bson.Document;
 
+import java.util.LinkedList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -113,6 +115,14 @@ public class Main {
         meep.append("receipts", receipts);
         BasicDBList registrees = new BasicDBList();
         meep.append("registrees", registrees);
+
+        BasicDBList hashtags = new BasicDBList();
+        HashtagController controller = new HashtagController();
+        LinkedList<String> aux2 = controller.extractHashtags(arg.getAsJsonPrimitive("text").getAsString());
+        for(String s : aux2)
+            hashtags.add(s);
+        meep.append("hashtags", hashtags);
+
         meep.append("isPublic", true);
         return meep;
     }

@@ -40,8 +40,8 @@ import static spark.Spark.put;
  */
 public class Server {
 
-    static MongoClient client = new MongoClient("54.94.252.8", 27017);
-    //static MongoClient client  = new MongoClient("dbmeep", 27017);
+    //static MongoClient client = new MongoClient("54.94.252.8", 27017);
+    static MongoClient client  = new MongoClient("dbmeep", 27017);
     static MongoDatabase database = client.getDatabase("local");
     static MongoCollection<Document> meepCol = database.getCollection("meeps");
 
