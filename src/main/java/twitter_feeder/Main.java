@@ -50,7 +50,7 @@ public class Main {
 
         JsonParser parser = new JsonParser();
         int validParsedMeeps;
-        for (validParsedMeeps = 0; validParsedMeeps < 1000;) {
+        for (validParsedMeeps = 0; validParsedMeeps < 100;) {
             if (client.isDone()) {
                 System.out.println("Client connection closed unexpectedly: " + client.getExitEvent().getMessage());
                 break;
