@@ -34,7 +34,7 @@ Returns meeps close to the position on a radius
 - Create a meep with `POST` at
 
 ```
-http://host:8080/meeps/
+http://host:8080/meeps
 
 Data: { body: { sender:<someUserId>, message:<someString>, ... } }
 Returns the meep id
