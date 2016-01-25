@@ -49,7 +49,7 @@ Returns the meep data
 - Get a meep comments with `GET` at
 
 ```
-http://host:8080/meeps/{id}/comments&limit=<number>?offset=<number>
+http://host:8080/meeps/{id}/comments?limit=<number>&offset=<number>
 ```
 
 - Add a comment with `POST` at
