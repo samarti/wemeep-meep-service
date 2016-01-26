@@ -351,7 +351,7 @@ public class ApiController {
         JsonObject data = parser.parse(request.body()).getAsJsonObject();
         JsonObject red = new JsonObject();
         String id = request.params(":id");
-        Boolean decider = false;
+        Boolean decider = null;
         if(data.get("ids") == null || data.get("type") == null)
             red.addProperty("Error", "Ids or type missing");
         else
@@ -383,7 +383,7 @@ public class ApiController {
         JsonObject data = parser.parse(request.body()).getAsJsonObject();
         JsonObject res = new JsonObject();
         String id = request.params(":id");
-        Boolean like = false;
+        Boolean like = null;
         if(data.get("id") == null || data.get("type") == null)
             res.addProperty("Error", "Id or type missing");
         else
