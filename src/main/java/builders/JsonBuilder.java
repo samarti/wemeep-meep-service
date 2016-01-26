@@ -36,6 +36,9 @@ public class JsonBuilder {
         aux2.addProperty("latitude", aux.lat);
         aux2.addProperty("longitude", aux.longi);
         aux2.addProperty("senderId", aux.senderId);
+        aux2.addProperty("likeCounter", aux.likeCounter);
+        aux2.addProperty("viewCounter", aux.viewCounter);
+        aux2.addProperty("commentCounter", aux.commentCounter);
         return aux2;
     }
 }
