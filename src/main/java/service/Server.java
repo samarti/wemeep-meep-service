@@ -32,9 +32,9 @@ public class Server {
 
         get("/meeps/:id/likes", (request, response) -> ApiController.hasLiked(response, request).body());
 
-        put("/meeps", (request, response) -> ApiController.createMeep(response, request).body());
+        post("/meeps", (request, response) -> ApiController.createMeep(response, request).body());
 
-        put("/meeps/:id/comments", (request, response) -> ApiController.createComment(response, request).body());
+        post("/meeps/:id/comments", (request, response) -> ApiController.createComment(response, request).body());
 
         put("/meeps/:id/newview", (request, response) -> ApiController.newView(response, request).body());
 
