@@ -34,7 +34,7 @@ Returns meeps close to the position on a radius
 - Create a meep with `POST` at
 
 ```
-http://host:8080/meeps/
+http://host:8080/meeps
 
 Data: { body: { sender:<someUserId>, message:<someString>, ... } }
 Returns the meep id
@@ -49,7 +49,7 @@ Returns the meep data
 - Get a meep comments with `GET` at
 
 ```
-http://host:8080/meeps/{id}/comments&limit=<number>?offset=<number>
+http://host:8080/meeps/{id}/comments?limit=<number>&offset=<number>
 ```
 
 - Add a comment with `POST` at
