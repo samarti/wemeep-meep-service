@@ -97,6 +97,9 @@ public class Main {
         meep.append("message", arg.getAsJsonPrimitive("text").getAsString());
         meep.append("type", "tweet");
         meep.append("isRoot", true);
+        meep.append("commentCounter", 0);
+        meep.append("likeCounter", 0);
+        meep.append("viewCounter", 0);
         /*if(arg.getAsJsonObject("entities").has("media"))
             meep.append("picture", arg.getAsJsonObject("entities").getAsJsonObject("media").get("media_url").getAsString());
         else*/
