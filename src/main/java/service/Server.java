@@ -30,13 +30,15 @@ public class Server {
 
         get("/seed", (request, response) -> ApiController.seed(response, request).body());
 
+        get("/meeps/:id/likes", (request, response) -> ApiController.hasLiked(response, request).body());
+
         put("/meeps", (request, response) -> ApiController.createMeep(response, request).body());
 
         put("/meeps/:id/comments", (request, response) -> ApiController.createComment(response, request).body());
 
         put("/meeps/:id/newview", (request, response) -> ApiController.newView(response, request).body());
 
-        put("/meeps/:id/newlike", (request, response) -> ApiController.newLike(response, request).body());
+        put("/meeps/:id/likes", (request, response) -> ApiController.changeLikeStatus(response, request).body());
 
         put("/meeps/:id/registrees", (request, response) -> ApiController.changeRegistryRelation(response, request).body());
     }

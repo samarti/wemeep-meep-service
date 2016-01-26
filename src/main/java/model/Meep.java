@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class Meep {
     public String senderName, message, type, picture, objectId, senderId;
-    public List<HashMap<String, String>> receipts, registrees;
+    public List<HashMap<String, String>> receipts, registrees, likes;
     public LinkedList<String> hashtags;
     public double lat, longi;
     public Boolean isPublic, isRoot;

@@ -118,6 +118,8 @@ public class Main {
         meep.append("receipts", receipts);
         BasicDBList registrees = new BasicDBList();
         meep.append("registrees", registrees);
+        BasicDBList likes = new BasicDBList();
+        meep.append("likes", likes);
 
         BasicDBList hashtags = new BasicDBList();
         HashtagController controller = new HashtagController();

@@ -66,6 +66,11 @@ http://host:8080/meeps/{id}/registrees
 
 Returns the meep registrees as an array
 ```
+- Check if a user likes a Meep with `GET` at
+```
+http://host:8080/meeps/likes?userId=<someId>
+Returns {"likes": true | false} or some error
+```
 - Change registree situation with `PUT`
 
 ```
@@ -80,13 +85,14 @@ http://host:8080/searchmeep?radius=<some km dist>&lat=<lat>&longi=<long>&query=<
 
 Returns meeps id's close to the position
 ```
+- Add or remove a like with `PUT` at
+```
+http://host:8080/meeps/{id}/likes
+Data: { body: { type:<"like" or "unlike">, id: <likee id>} }
+```
 - Add a view with `PUT` at
 ```
 http://host:8080/meeps/{id}/newview
-```
-- Add a like with `PUT` at
-```
-http://host:8080/meeps/{id}/newlike
 ```
 ### Data model
 #### Objects
@@ -110,6 +116,7 @@ http://host:8080/meeps/{id}/newlike
 | createdAt   | Timestamp |
 | registrees   | Array<User> |
 | hashtags  | Array<String> |
+| likes   | Array<String> |
 
 ##### Comment
 |Field   |Values   |

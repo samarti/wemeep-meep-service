@@ -65,6 +65,7 @@ public class Parser {
         original.remove("receipts");
         original.remove("comments");
         original.remove("registrees");
+        original.remove("likes");
         String createdAt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(id.getTimestamp() * 1000L));
         original.addProperty("createdAt", createdAt);
         return original.toString();

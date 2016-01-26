@@ -46,6 +46,8 @@ public class DocumentBuilder {
         meep.append("receipts", receipts);
         BasicDBList registrees = new BasicDBList();
         meep.append("registrees", registrees);
+        BasicDBList likes = new BasicDBList();
+        meep.append("likes", likes);
         BasicDBList hashtags = new BasicDBList();
         if(arg.hashtags != null)
             for(String s : arg.hashtags)
