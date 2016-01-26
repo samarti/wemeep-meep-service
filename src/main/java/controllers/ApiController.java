@@ -409,7 +409,8 @@ public class ApiController {
                 response.body(res.toString());
             } else {
                 aux = meepCol.findOneAndUpdate(aux, new Document("$inc", new Document("likeCounter", like ? 1 : -1)), new FindOneAndUpdateOptions().returnDocument(ReturnDocument.AFTER));
-                meepCol.findOneAndUpdate(aux, new Document(like ? "$push" : "$pull", new Document("registrees", new Document("id", data.get("id").getAsString()))), new FindOneAndUpdateOptions().returnDocument(ReturnDocument.AFTER));
+                meepCol.findOneAndUpdate(aux, new Document(like ? "$push" : "$pull", new Document("likes", new Document("id", data.get("id").getAsString()))), new FindOneAndUpdateOptions().returnDocument(ReturnDocument.AFTER));
+                res.addProperty("Success", "Likes updated");
             }
         }
         response.body(res.toString() + "\n");
