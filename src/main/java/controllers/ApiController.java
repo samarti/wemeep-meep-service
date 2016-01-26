@@ -185,21 +185,20 @@ public class ApiController {
         query.put("_id", new ObjectId(id));
         FindIterable<Document> dbObj = meepCol.find(query);
         Document aux = dbObj.first();
-        res.addProperty("Error", "Meep not found");
         boolean hasLiked = false;
         if(aux == null)
-            response.body(res.toString() + "\n");
+            res.addProperty("Error", "Meep not found");
         else {
             JsonParser parser = new JsonParser();
             JsonArray ret = parser.parse(aux.toJson()).getAsJsonObject().getAsJsonArray("likes");
             for(JsonElement el : ret){
-                if(el.getAsJsonObject().get("id").equals(userId)){
+                if(el.getAsJsonObject().get("id").getAsString().equals(userId)){
                     hasLiked = true;
                     break;
                 }
             }
+            res.addProperty("likes", hasLiked);
         }
-        res.addProperty("likes", hasLiked);
         response.body(res.toString());
         return response;
     }
