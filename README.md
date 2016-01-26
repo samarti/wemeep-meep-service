@@ -80,6 +80,14 @@ http://host:8080/searchmeep?radius=<some km dist>&lat=<lat>&longi=<long>&query=<
 
 Returns meeps id's close to the position
 ```
+- Add a view with `PUT` at
+```
+http://host:8080/meeps/{id}/newview
+```
+- Add a like with `PUT` at
+```
+http://host:8080/meeps/{id}/newlike
+```
 ### Data model
 #### Objects
 ##### Meep
@@ -95,6 +103,9 @@ Returns meeps id's close to the position
 | picture     | URL       |
 | lat     | Long       |
 | longi     | Long       |
+| commentCounter | Integer |
+| likeCounter | Integer |
+| viewCounter | Integer |
 | updatedAt   | Timestamp |
 | createdAt   | Timestamp |
 | registrees   | Array<User> |

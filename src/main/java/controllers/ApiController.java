@@ -188,7 +188,7 @@ public class ApiController {
     }
 
     public static Response searchMeep(Response response, Request request){
-        String query = null;
+        String query;
         double km;
         double lat, longi;
         try {
@@ -294,6 +294,7 @@ public class ApiController {
                         aux = meepCol.findOneAndUpdate(aux, new Document("$push", new Document("hashtags", s)), new FindOneAndUpdateOptions().returnDocument(ReturnDocument.AFTER));
                 }
             }
+            meepCol.findOneAndUpdate(aux, new Document("$inc", new Document("commentCounter", 1)));
             String createdAt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(System.currentTimeMillis()));
             JsonObject res2 = new JsonObject();
             res2.addProperty("Success", true);
@@ -301,6 +302,40 @@ public class ApiController {
             res2.addProperty("id", comment.get("_id").toString());
             response.body(res2.toString() + "\n");
         }
+        return response;
+    }
+
+    public static Response newLike(Response response, Request request) {
+        String id = request.params(":id");
+        JsonObject res = new JsonObject();
+        BasicDBObject query = new BasicDBObject();
+        query.put("_id", new ObjectId(id));
+        FindIterable<Document> dbObj = meepCol.find(query);
+        Document aux = dbObj.first();
+        if (aux == null)
+            res.addProperty("Error", "Meep not found");
+        else {
+            meepCol.findOneAndUpdate(aux, new Document("$inc", new Document("likeCounter", 1)));
+            res.addProperty("Success", true);
+        }
+        response.body(res.toString() + "\n");
+        return response;
+    }
+
+    public static Response newView(Response response, Request request) {
+        String id = request.params(":id");
+        JsonObject res = new JsonObject();
+        BasicDBObject query = new BasicDBObject();
+        query.put("_id", new ObjectId(id));
+        FindIterable<Document> dbObj = meepCol.find(query);
+        Document aux = dbObj.first();
+        if (aux == null)
+            res.addProperty("Error", "Meep not found");
+        else {
+            meepCol.findOneAndUpdate(aux, new Document("$inc", new Document("viewCounter", 1)));
+            res.addProperty("Success", true);
+        }
+        response.body(res.toString() + "\n");
         return response;
     }
 
@@ -341,5 +376,4 @@ public class ApiController {
         response.body(red.toString());
         return response;
     }
-
 }

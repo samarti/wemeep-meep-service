@@ -34,6 +34,10 @@ public class Server {
 
         post("/meeps/:id/comments", (request, response) -> ApiController.createComment(response, request).body());
 
+        post("/meeps/:id/newview", (request, response) -> ApiController.newView(response, request).body());
+
+        post("/meeps/:id/newlike", (request, response) -> ApiController.newLike(response, request).body());
+
         put("/meeps/:id/registrees", (request, response) -> ApiController.changeRegistryRelation(response, request).body());
     }
 }

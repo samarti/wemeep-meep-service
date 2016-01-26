@@ -28,6 +28,9 @@ public class DocumentBuilder {
         meep.append("type", arg.type);
         meep.append("isRoot", arg.isRoot);
         meep.append("picture", arg.picture);
+        meep.append("commentCounter", 0);
+        meep.append("likeCounter", 0);
+        meep.append("viewCounter", 0);
 
         BasicDBList list = new BasicDBList();
         list.add(arg.longi);
