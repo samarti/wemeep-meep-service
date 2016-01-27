@@ -68,7 +68,7 @@ Returns the meep registrees as an array
 ```
 - Check if a user likes a Meep with `GET` at
 ```
-http://host:8080/meeps/likes?userId=<someId>
+http://host:8080/meeps/{id}/likes?userId=<someId>
 Returns {"likes": true | false} or some error
 ```
 - Change registree situation with `PUT`
