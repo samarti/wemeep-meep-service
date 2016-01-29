@@ -76,7 +76,7 @@ Returns {"likes": true | false} or some error
 ```
 http://host:8080/meeps/{id}/registrees
 
-Data: { body: { type:<"add" or "remove">, ids:[id: <registree id>, id: <registree id>, ...]} }
+Data: { body: { type:<"add" or "remove">, ids:[ {id: <registree id>, type:<temporary or permanent}, ...]} }
 ```
 - Search for close public meeps containing the `query` on some hashtag with `GET` at
 
@@ -114,7 +114,7 @@ http://host:8080/meeps/{id}/newview
 | viewCounter | Integer |
 | updatedAt   | Timestamp |
 | createdAt   | Timestamp |
-| registrees   | Array<User> |
+| registrees   | JsonArray: [{ id:<userId>, type:<temporary or permanent>}]}, { |
 | hashtags  | Array<String> |
 | likes   | Array<String> |
 
