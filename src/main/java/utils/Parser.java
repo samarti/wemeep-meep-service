@@ -1,9 +1,6 @@
 package utils;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import model.Circle;
 import model.Comment;
 import model.Meep;
@@ -54,6 +51,7 @@ public class Parser {
 
     public static String cleanMeepJson(String json, ObjectId id){
         JsonParser parser = new JsonParser();
+        Gson aux = new GsonBuilder().disableHtmlEscaping().create();
         JsonObject original = parser.parse(json).getAsJsonObject();
         original.addProperty("objectId", id.toHexString());
         original.remove("_id");

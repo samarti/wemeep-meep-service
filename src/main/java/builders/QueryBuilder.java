@@ -30,7 +30,14 @@ public class QueryBuilder {
             list[0] = new BasicDBObject();
             list[0].put("id", id);
             jobj4.append("$in", list);
-            jobj3.append("receipts", jobj4);
+            BasicDBObject jobj6 = new BasicDBObject();
+            jobj6.append("receipts", jobj4);
+            BasicDBObject[] jobj5 = new BasicDBObject[2];
+            jobj5[0] = jobj6;
+            BasicDBObject jobj7 = new BasicDBObject();
+            jobj7.append("senderId", id);
+            jobj5[1] = jobj7;
+            jobj3.append("$or", jobj5);
         }
         return jobj3;
     }
