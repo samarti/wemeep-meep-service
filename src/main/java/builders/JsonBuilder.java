@@ -21,6 +21,7 @@ public class JsonBuilder {
         aux2.addProperty("createdAt", aux.createdAt);
         aux2.addProperty("updatedAt", aux.updatedAt);
         aux2.addProperty("id", aux.objectId);
+        aux2.addProperty("type", aux.type);
         return aux2;
     }
 
