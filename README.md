@@ -119,13 +119,16 @@ http://host:8080/meeps/{id}/newview
 | likes   | Array<String> |
 
 ##### Comment
-|Field   |Values   |
-|---|---|
-| senderName  | String  |
-| senderId   | String |
-| message     | String    |
+|Field      |Values     |
+|-----------|-----------|
+| senderName| String    |
+| senderId  | String    |
+| message   | String    |
+| type      | String    |
 | updatedAt | Timestamp |
 | createdAt | Timestamp |
+
+- Comment type can be either "text" or "picture".
 
 ## TODO
 - Add authentication to the database

@@ -21,10 +21,14 @@ public class Validator {
     }
 
     public static boolean validateComment(Comment c){
-        if(c.message == null ||
-                c.senderId == null ||
-                c.senderName == null)
+        if(c.type == null || (!c.type.equals("text") && !c.type.equals("picture")))
             return false;
+        if(c.type.equals("text"))
+            if(c.message == null || c.senderId == null || c.senderName == null)
+                return false;
+        if(c.type.equals("picture"))
+            if(c.senderId == null || c.senderName == null)
+                return false;
         return true;
     }
 }
