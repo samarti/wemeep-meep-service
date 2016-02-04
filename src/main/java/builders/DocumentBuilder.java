@@ -65,6 +65,7 @@ public class DocumentBuilder {
         comment.append("senderName", arg.senderName);
         comment.append("senderId", arg.senderId);
         comment.append("message", arg.message);
+        comment.append("type", arg.type);
 
         BasicDBList hashtags = new BasicDBList();
         if(arg.hashtags != null)
