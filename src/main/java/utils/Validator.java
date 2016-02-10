@@ -27,7 +27,7 @@ public class Validator {
             if(c.message == null || c.senderId == null || c.senderName == null)
                 return false;
         if(c.type.equals("picture"))
-            if(c.senderId == null || c.senderName == null)
+            if(c.senderId == null || c.senderName == null || c.pictureUrl == null)
                 return false;
         return true;
     }

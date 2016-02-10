@@ -14,7 +14,7 @@ import java.util.List;
  * Rebecca Black
  */
 public class Meep {
-    public String senderName, message, type, picture, objectId, senderId;
+    public String senderName, message, type, pictureUrl, objectId, senderId;
     public List<HashMap<String, String>> receipts, registrees, likes;
     public LinkedList<String> hashtags;
     public double lat, longi;

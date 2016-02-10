@@ -27,7 +27,7 @@ public class DocumentBuilder {
         meep.append("message", arg.message);
         meep.append("type", arg.type);
         meep.append("isRoot", arg.isRoot);
-        meep.append("picture", arg.picture);
+        meep.append("pictureUrl", arg.pictureUrl);
         meep.append("commentCounter", 0);
         meep.append("likeCounter", 0);
         meep.append("viewCounter", 0);
@@ -66,6 +66,7 @@ public class DocumentBuilder {
         comment.append("senderId", arg.senderId);
         comment.append("message", arg.message);
         comment.append("type", arg.type);
+        comment.append("pictureUrl", arg.pictureUrl);
 
         BasicDBList hashtags = new BasicDBList();
         if(arg.hashtags != null)

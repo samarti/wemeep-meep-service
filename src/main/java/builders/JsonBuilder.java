@@ -22,6 +22,7 @@ public class JsonBuilder {
         aux2.addProperty("updatedAt", aux.updatedAt);
         aux2.addProperty("id", aux.objectId);
         aux2.addProperty("type", aux.type);
+        aux2.addProperty("pictureUrl", aux.pictureUrl);
         return aux2;
     }
 
@@ -37,6 +38,7 @@ public class JsonBuilder {
         aux2.addProperty("latitude", aux.lat);
         aux2.addProperty("longitude", aux.longi);
         aux2.addProperty("senderId", aux.senderId);
+        aux2.addProperty("pictureUrl", aux.pictureUrl);
         aux2.addProperty("likeCounter", aux.likeCounter);
         aux2.addProperty("viewCounter", aux.viewCounter);
         aux2.addProperty("commentCounter", aux.commentCounter);
