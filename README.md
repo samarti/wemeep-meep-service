@@ -66,6 +66,11 @@ http://host:8080/meeps/{id}/registrees
 
 Returns the meep registrees as an array
 ```
+- Update a Meep (permitted fields to be updated: `pictureUrl` and `message`) with `PUT` at:
+```
+http://host:8080/meeps/{id}
+```
+
 - Check if a user likes a Meep with `GET` at
 ```
 http://host:8080/meeps/{id}/likes?userId=<someId>
@@ -106,7 +111,7 @@ http://host:8080/meeps/{id}/newview
 | type        | String    |
 | receipts    | Array<Comment>    |
 | isPublic      | Boolean   |
-| picture     | URL       |
+| pictureUrl     | String       |
 | lat     | Long       |
 | longi     | Long       |
 | commentCounter | Integer |
@@ -125,6 +130,7 @@ http://host:8080/meeps/{id}/newview
 | senderId  | String    |
 | message   | String    |
 | type      | String    |
+| pictureUrl     | String       |
 | updatedAt | Timestamp |
 | createdAt | Timestamp |
 

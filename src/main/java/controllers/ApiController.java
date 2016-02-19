@@ -432,4 +432,28 @@ public class ApiController {
         response.body(res.toString() + "\n");
         return response;
     }
+
+    /**
+     * Updates a meep but only the permitted fields which can be updated. See documentation.
+     * @param response
+     * @param request
+     * @return
+     */
+    public static Response updateMeep(Response response, Request request) {
+        JsonParser parser = new JsonParser();
+        JsonObject ret = new JsonObject();
+        try {
+            String id = request.params(":id");
+            if(id == null)
+                throw new Exception("Must include meep id");
+            Meep obj = Parser.parseMeep(request.body(), false);
+            boolean updated = MeepController.updateMeep(meepCol, id, obj);
+            ret.addProperty("Succes", updated);
+        } catch (Exception e){
+            ret.addProperty("Error", e.getMessage());
+        } finally {
+            response.body(ret.toString());
+            return response;
+        }
+    }
 }

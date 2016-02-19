@@ -41,5 +41,7 @@ public class Server {
         put("/meeps/:id/likes", (request, response) -> ApiController.changeLikeStatus(response, request).body());
 
         put("/meeps/:id/registrees", (request, response) -> ApiController.changeRegistryRelation(response, request).body());
+
+        put("/meeps/:id", (request, response) -> ApiController.updateMeep(response, request).body());
     }
 }

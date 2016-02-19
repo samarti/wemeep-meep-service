@@ -7,9 +7,13 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.FindOneAndUpdateOptions;
 import com.mongodb.client.model.ReturnDocument;
+import com.mongodb.client.model.UpdateOptions;
+import com.mongodb.client.result.UpdateResult;
+import model.Meep;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+import javax.print.Doc;
 import java.util.LinkedList;
 
 /**
@@ -31,6 +35,22 @@ public class MeepController {
                 auxEntry.append("type", el.getAsJsonObject().get("type").getAsString());
                 aux = col.findOneAndUpdate(aux, new Document(add ? "$push" : "$pull", new Document("registrees", auxEntry)), new FindOneAndUpdateOptions().returnDocument(ReturnDocument.AFTER));
             }
+            return true;
+        }
+    }
+
+    public static boolean updateMeep(MongoCollection<Document> col, String meepId, Meep meep){
+        BasicDBObject query = new BasicDBObject();
+        query.put("_id", new ObjectId(meepId));
+        FindIterable<Document> dbObj = col.find(query);
+        Document aux = dbObj.first();
+        if (aux == null) {
+            return false;
+        } else {
+            if(meep.pictureUrl != null)
+                col.updateOne(aux, new Document("$set", new Document("pictureUrl", meep.pictureUrl)));
+            if(meep.message != null)
+                col.updateOne(aux, new Document("$set", new Document("message", meep.message)));
             return true;
         }
     }
@@ -58,4 +78,6 @@ public class MeepController {
             }
         }
     }
+
+
 }
