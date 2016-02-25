@@ -25,8 +25,11 @@ public class UserController {
         try {
             responses = client.newCall(request).execute();
             String result = responses.body().string();
-            JsonParser parser = new JsonParser();
-            return parser.parse(result).getAsJsonObject().get(profilePictureField).getAsString();
+            if(result != null) {
+                JsonParser parser = new JsonParser();
+                return parser.parse(result).getAsJsonObject().get(profilePictureField).getAsString();
+            } else
+                return null;
         } catch (IOException e) {
             e.printStackTrace();
             return null;

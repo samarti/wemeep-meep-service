@@ -43,7 +43,7 @@ public class ApiController {
     static MongoClient client  = new MongoClient("dbmeep", 27017);
     static MongoDatabase database = client.getDatabase("local");
     static MongoCollection<Document> meepCol = database.getCollection("meeps");
-    static String USER_SERVICE_URL = System.getenv("USER_SERVICE_URL");
+    static String USER_SERVICE_URL = System.getenv().get("USER_SERVICE_URL");
 
     public static void init(){
         DBHelper.init(meepCol);
