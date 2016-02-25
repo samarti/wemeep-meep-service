@@ -106,9 +106,10 @@ public class ApiController {
             JsonElement com = it.next();
             if(index >= offset && index < offset + limit){
                 Document docAux = Document.parse(com.toString());
-                docAux = MeepController.addSenderPictureToMeepDocument(docAux);
                 Comment aux = Parser.parseComment(docAux.toJson(), true);
-                ret2.add(JsonBuilder.buildJsonComment(aux));
+                JsonObject jsonObject = JsonBuilder.buildJsonComment(aux);
+                jsonObject = MeepController.addSenderPictureToMeepJson(jsonObject);
+                ret2.add(jsonObject);
             }
             index++;
         }
