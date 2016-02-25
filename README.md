@@ -131,6 +131,7 @@ http://host:8080/meeps/{id}/newview
 | senderId  | String    |
 | message   | String    |
 | type      | String    |
+| senderPictureUrl* | String |
 | pictureUrl     | String       |
 | updatedAt | Timestamp |
 | createdAt | Timestamp |
