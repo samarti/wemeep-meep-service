@@ -67,7 +67,7 @@ public class MeepController {
         if(senderId != null) {
             String pictureUrl = controller.getUserProfilePictureUrl(senderId);
             if(pictureUrl != null)
-                meep.append(UserController.profilePictureField, pictureUrl);
+                meep.append("senderPictureUrl", pictureUrl);
         }
         return meep;
     }
