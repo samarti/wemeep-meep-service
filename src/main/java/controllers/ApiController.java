@@ -106,6 +106,7 @@ public class ApiController {
             JsonElement com = it.next();
             if(index >= offset && index < offset + limit){
                 Document docAux = Document.parse(com.toString());
+                docAux = MeepController.addSenderPictureToMeepDocument(docAux);
                 Comment aux = Parser.parseComment(docAux.toJson(), true);
                 ret2.add(JsonBuilder.buildJsonComment(aux));
             }
@@ -145,10 +146,11 @@ public class ApiController {
         try (MongoCursor<Document> cursor = meepCol.find(jobj3).iterator()) {
             while (cursor.hasNext()) {
                 Document docAux = cursor.next();
-                docAux = MeepController.addSenderPictureToMeepDocument(docAux);
                 ObjectId id = (ObjectId) docAux.get("_id");
                 Meep aux = Parser.parseMeep(docAux.toJson(), true);
-                ret.add(JsonBuilder.buildJsonMeep(aux, id));
+                JsonObject jsonObject = JsonBuilder.buildJsonMeep(aux, id);
+                jsonObject = MeepController.addSenderPictureToMeepJson(jsonObject);
+                ret.add(jsonObject);
             }
         }
         response.body(ret.toString() + "\n");

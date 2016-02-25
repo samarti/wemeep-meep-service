@@ -2,6 +2,7 @@ package controllers;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -56,7 +57,7 @@ public class MeepController {
     }
 
     /**
-     * Adds the sender profile picture, from the Users Service, to a meep
+     * Adds the sender profile picture, from the Users Service, to a meep or comment
      * document.
      * @param meep
      * @return
@@ -68,6 +69,23 @@ public class MeepController {
             String pictureUrl = controller.getUserProfilePictureUrl(senderId);
             if(pictureUrl != null)
                 meep.append("senderPictureUrl", pictureUrl);
+        }
+        return meep;
+    }
+
+    /**
+     * Adds the sender profile picture, from the Users Service, to a meep or comment
+     * document.
+     * @param meep
+     * @return
+     */
+    public static JsonObject addSenderPictureToMeepJson(JsonObject meep){
+        UserController controller = new UserController();
+        String senderId = meep.get("senderId").getAsString();
+        if(senderId != null) {
+            String pictureUrl = controller.getUserProfilePictureUrl(senderId);
+            if(pictureUrl != null)
+                meep.addProperty("senderPictureUrl", pictureUrl);
         }
         return meep;
     }
