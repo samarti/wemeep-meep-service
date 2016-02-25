@@ -1,5 +1,6 @@
 package controllers;
 
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -14,7 +15,7 @@ import java.io.IOException;
  */
 public class UserController {
 
-    public static final String profilePictureField = "profilePictureUrl";
+    public static final String profilePictureField = "picture";
 
     public String getUserProfilePictureUrl(String userId){
         OkHttpClient client = new OkHttpClient();
@@ -27,7 +28,11 @@ public class UserController {
             String result = responses.body().string();
             if(result != null) {
                 JsonParser parser = new JsonParser();
-                return parser.parse(result).getAsJsonObject().get(profilePictureField).getAsString();
+                JsonObject aux = parser.parse(result).getAsJsonObject();
+                if(aux.has(profilePictureField))
+                    return aux.get(profilePictureField).getAsString();
+                else
+                    return null;
             } else
                 return null;
         } catch (IOException e) {
