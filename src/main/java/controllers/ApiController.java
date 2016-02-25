@@ -43,6 +43,7 @@ public class ApiController {
     static MongoClient client  = new MongoClient("dbmeep", 27017);
     static MongoDatabase database = client.getDatabase("local");
     static MongoCollection<Document> meepCol = database.getCollection("meeps");
+    static String USER_SERVICE_URL = System.getenv("USER_SERVICE_URL");
 
     public static void init(){
         DBHelper.init(meepCol);
@@ -63,8 +64,10 @@ public class ApiController {
         red.addProperty("Error", "Meep not found");
         if(aux == null)
             response.body(red.toString() + "\n");
-        else
+        else {
+            aux = MeepController.addSenderPictureToMeepDocument(aux);
             response.body(Parser.cleanMeepJson(aux));
+        }
         return response;
     }
 
@@ -142,6 +145,7 @@ public class ApiController {
         try (MongoCursor<Document> cursor = meepCol.find(jobj3).iterator()) {
             while (cursor.hasNext()) {
                 Document docAux = cursor.next();
+                docAux = MeepController.addSenderPictureToMeepDocument(docAux);
                 ObjectId id = (ObjectId) docAux.get("_id");
                 Meep aux = Parser.parseMeep(docAux.toJson(), true);
                 ret.add(JsonBuilder.buildJsonMeep(aux, id));

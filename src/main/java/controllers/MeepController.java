@@ -55,6 +55,23 @@ public class MeepController {
         }
     }
 
+    /**
+     * Adds the sender profile picture, from the Users Service, to a meep
+     * document.
+     * @param meep
+     * @return
+     */
+    public static Document addSenderPictureToMeepDocument(Document meep){
+        UserController controller = new UserController();
+        String senderId = meep.getString("senderId");
+        if(senderId != null) {
+            String pictureUrl = controller.getUserProfilePictureUrl(senderId);
+            if(pictureUrl != null)
+                meep.append(UserController.profilePictureField, pictureUrl);
+        }
+        return meep;
+    }
+
     public static void insertMeepReceipts(MongoCollection<Document> col, String meepId, JsonArray receipts){
         BasicDBObject query = new BasicDBObject();
         query.put("_id", new ObjectId(meepId));

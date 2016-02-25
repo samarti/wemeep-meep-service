@@ -25,4 +25,5 @@ dependencies {
     compile 'com.google.code.gson:gson:2.4'
     compile 'com.twitter:hbc-core:2.2.0'
     compile 'com.twitter:twitter-text:1.6.1'
+    compile 'com.squareup.okhttp3:okhttp:3.1.2'
 }

@@ -114,6 +114,7 @@ http://host:8080/meeps/{id}/newview
 | pictureUrl     | String       |
 | lat     | Long       |
 | longi     | Long       |
+| senderPictureUrl* | String |
 | commentCounter | Integer |
 | likeCounter | Integer |
 | viewCounter | Integer |
@@ -135,6 +136,7 @@ http://host:8080/meeps/{id}/newview
 | createdAt | Timestamp |
 
 - Comment type can be either "text" or "picture".
+- senderPictureUrl is not a real field, but set on request from the Users service.
 
 ## TODO
 - Add authentication to the database

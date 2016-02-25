@@ -7,6 +7,7 @@ RUN curl -sLO https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}
   ln -s gradle-${GRADLE_VERSION} gradle && \
   rm gradle-${GRADLE_VERSION}-all.zip
 
+ENV USER_SERVICE_URL http://54.233.122.209:8080/
 ENV GRADLE_HOME /usr/bin/gradle
 ENV PATH $PATH:$GRADLE_HOME/bin
 
