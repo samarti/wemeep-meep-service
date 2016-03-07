@@ -54,6 +54,10 @@ public class DocumentBuilder {
                 hashtags.add(s);
         meep.append("hashtags", hashtags);
         meep.append("isPublic", arg.isPublic);
+
+        String createdAt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(System.currentTimeMillis()));
+        meep.append("createdAt", createdAt);
+        meep.append("updatedAt", createdAt);
         return meep;
     }
 

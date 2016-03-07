@@ -2,6 +2,8 @@ package service;
 
 import controllers.ApiController;
 
+import java.util.TimeZone;
+
 import static spark.Spark.*;
 
 /**
@@ -11,6 +13,8 @@ public class Server {
 
 
     public static void main(String[] args) {
+
+        TimeZone.setDefault(TimeZone.getTimeZone("America/Santiago"));
 
         ApiController.init();
 
