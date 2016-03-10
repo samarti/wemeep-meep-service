@@ -271,6 +271,49 @@ public class ApiController {
         response.body("Received");
         return response;
     }
+
+    public static Response getUserMeeps(Response response, Request request){
+        boolean expanded;
+        String id;
+        try {
+            Map<String, String> data = Parser.splitQuery(request.queryString());
+            expanded = Boolean.parseBoolean(data.get("expanded"));
+            id = request.params(":id");
+            if(id == null || id.length() == 0)
+                throw new Exception("Invalid id");
+        } catch (Exception e){
+            JsonObject red = new JsonObject();
+            red.addProperty("Error", "Bad arguments. Please provide expanded bool.");
+            response.body(red.toString() + "\n");
+            return response;
+        }
+        int qtty = 0;
+        BasicDBObject query = new BasicDBObject();
+        query.put("senderId", id);
+        JsonArray arr = new JsonArray();
+
+        try (MongoCursor<Document> cursor = meepCol.find(query).iterator()) {
+            while(cursor.hasNext()) {
+                Document doc = cursor.next();
+                qtty++;
+                if (expanded) {
+                    JsonObject aux = new JsonObject();
+                    aux.addProperty("id", doc.getObjectId("_id").toString());
+                    arr.add(aux);
+                }
+            }
+            cursor.close();
+        }
+
+
+        JsonObject ret = new JsonObject();
+        ret.addProperty("numberOfMeeps", qtty);
+        if(expanded)
+            ret.add("meepsIds", arr);
+        response.body(ret.toString());
+        return response;
+    }
+
     /***********************************/
     /**                               **/
     /**              POST             **/

@@ -36,6 +36,8 @@ public class Server {
 
         get("/meeps/:id/likes", (request, response) -> ApiController.hasLiked(response, request).body());
 
+        get("/usermeeps/:id", (request, response) -> ApiController.getUserMeeps(response, request).body());
+
         post("/meeps", (request, response) -> ApiController.createMeep(response, request).body());
 
         post("/meeps/:id/comments", (request, response) -> ApiController.createComment(response, request).body());

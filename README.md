@@ -90,6 +90,11 @@ http://host:8080/searchmeep?radius=<some km dist>&lat=<lat>&longi=<long>&query=<
 
 Returns meeps id's close to the position
 ```
+- Get the number of meeps posted by a user with `GET`:
+```
+http://host:8080/usermeeps?expanded=<true or false>
+Returns { "numberOfMeeps" : <number>, [ {id:<some id> ], ...]}
+```
 - Add or remove a like with `PUT` at
 ```
 http://host:8080/meeps/{id}/likes
