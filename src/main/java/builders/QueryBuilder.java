@@ -42,14 +42,22 @@ public class QueryBuilder {
         return jobj3;
     }
 
-    public static BasicDBObject getMeepsWithHashtagQuery(String query, double km, double lat, double longi){
+    /**
+     * Queries Meeps messages based on a string.
+     * @param query
+     * @param km
+     * @param lat
+     * @param longi
+     * @return
+     */
+    public static BasicDBObject getMeepsWithRegexQuery(String query, double km, double lat, double longi){
         Pattern pat = Pattern.compile("^.*" + query + ".*", Pattern.CASE_INSENSITIVE);
         BasicDBObject distanceQuery = getMeepOnRangeQuery(lat, longi, km, false, null);
         BasicDBList list1 = new BasicDBList();
         list1.add(pat);
         BasicDBObject in = new BasicDBObject();
         in.append("$in", list1);
-        distanceQuery.append("hashtags", in);
+        distanceQuery.append("message", in);
         return distanceQuery;
     }
 }

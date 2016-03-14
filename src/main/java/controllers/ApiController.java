@@ -249,7 +249,7 @@ public class ApiController {
             return response;
         }
 
-        BasicDBObject jobj3 = QueryBuilder.getMeepsWithHashtagQuery(query, km, lat, longi);
+        BasicDBObject jobj3 = QueryBuilder.getMeepsWithRegexQuery(query, km, lat, longi);
         JsonArray ret = new JsonArray();
         try (MongoCursor<Document> cursor = meepCol.find(jobj3).iterator()) {
             while (cursor.hasNext()) {
