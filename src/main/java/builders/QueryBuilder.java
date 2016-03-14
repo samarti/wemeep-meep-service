@@ -53,11 +53,7 @@ public class QueryBuilder {
     public static BasicDBObject getMeepsWithRegexQuery(String query, double km, double lat, double longi){
         Pattern pat = Pattern.compile("^.*" + query + ".*", Pattern.CASE_INSENSITIVE);
         BasicDBObject distanceQuery = getMeepOnRangeQuery(lat, longi, km, false, null);
-        BasicDBList list1 = new BasicDBList();
-        list1.add(pat);
-        BasicDBObject in = new BasicDBObject();
-        in.append("$in", list1);
-        distanceQuery.append("message", in);
+        distanceQuery.append("message", pat);
         return distanceQuery;
     }
 }
