@@ -38,6 +38,8 @@ public class Server {
 
         get("/usermeeps/:id", (request, response) -> ApiController.getUserMeeps(response, request).body());
 
+        get("/categories", (request, response) -> ApiController.getCategories(response, request).body());
+
         post("/meeps", (request, response) -> ApiController.createMeep(response, request).body());
 
         post("/meeps/:id/comments", (request, response) -> ApiController.createComment(response, request).body());

@@ -42,6 +42,7 @@ public class JsonBuilder {
         aux2.addProperty("likeCounter", aux.likeCounter);
         aux2.addProperty("viewCounter", aux.viewCounter);
         aux2.addProperty("commentCounter", aux.commentCounter);
+        aux2.addProperty("categoryId", aux.categoryId);
         return aux2;
     }
 }

@@ -3,6 +3,7 @@ package builders;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import model.Category;
 import model.Comment;
 import model.Meep;
 import org.bson.Document;
@@ -54,6 +55,11 @@ public class DocumentBuilder {
                 hashtags.add(s);
         meep.append("hashtags", hashtags);
         meep.append("isPublic", arg.isPublic);
+
+        if(arg.categoryId >= 0)
+            meep.append("categoryId", arg.categoryId);
+        else
+            meep.append("categoryId", Category.OTHER.getId());
 
         String createdAt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(System.currentTimeMillis()));
         meep.append("createdAt", createdAt);

@@ -1,5 +1,7 @@
 package model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -21,4 +23,5 @@ public class Meep {
     public Boolean isPublic, isRoot;
     public int commentCounter, likeCounter, viewCounter;
     public Timestamp created_at, updated_at;
+    public int categoryId = -1;
 }

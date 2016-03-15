@@ -17,6 +17,7 @@ import com.twitter.hbc.httpclient.BasicClient;
 import com.twitter.hbc.httpclient.auth.Authentication;
 import com.twitter.hbc.httpclient.auth.OAuth1;
 import controllers.HashtagController;
+import model.Category;
 import org.bson.Document;
 
 import java.util.LinkedList;
@@ -120,6 +121,8 @@ public class Main {
         meep.append("registrees", registrees);
         BasicDBList likes = new BasicDBList();
         meep.append("likes", likes);
+
+        meep.append("categoryId", Category.TWITTER.getId());
 
         BasicDBList hashtags = new BasicDBList();
         HashtagController controller = new HashtagController();

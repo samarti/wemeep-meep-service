@@ -95,6 +95,11 @@ Returns meeps id's close to the position
 http://host:8080/usermeeps?expanded=<true or false>
 Returns { "numberOfMeeps" : <number>, [ {id:<some id> ], ...]}
 ```
+- Get available Meeps Categories with `GET`
+```
+http://host:8080/categories
+Returns [ { "name":"cat name", id:<id> }, ...]
+```
 - Add or remove a like with `PUT` at
 ```
 http://host:8080/meeps/{id}/likes
@@ -104,6 +109,7 @@ Data: { body: { type:<"like" or "unlike">, id: <likee id>} }
 ```
 http://host:8080/meeps/{id}/newview
 ```
+
 ### Data model
 #### Objects
 ##### Meep
@@ -123,6 +129,7 @@ http://host:8080/meeps/{id}/newview
 | commentCounter | Integer |
 | likeCounter | Integer |
 | viewCounter | Integer |
+| categoryId  | Integer |
 | updatedAt   | Timestamp |
 | createdAt   | Timestamp |
 | registrees   | JsonArray: [{ id:<userId>, type:<temporary or permanent>}]}, { |
@@ -143,6 +150,33 @@ http://host:8080/meeps/{id}/newview
 
 - Comment type can be either "text" or "picture".
 - senderPictureUrl is not a real field, but set on request from the Users service.
+
+#### Categories
+| Name    | Id   |
+|---------|------|
+|Active Life (o Sports)| 1|
+|Arts & Entertainment| 2 |
+|Automotive| 3 |
+|Beauty & Spas| 4 |
+|Bicycles | 5 |
+|Education | 6 |
+|Event Planning & Services| 7 |
+|Financial Services| 8|
+|Food | 9 |
+|Health & Medical| 10 |
+|Home Services| 11 |
+|Hotels & Travel| 12 |
+|Local Services | 13 |
+|Mass Media| 14 |
+|Nightlife | 15 |
+|Pets | 16 |
+|Professional Services| 17 |
+|Public Services & Government| 18 |
+|Real Estate| 19 |
+|Religious Organizations| 20 |
+|Restaurants | 21 |
+|Shopping| 22 |
+|Other| 23 |
 
 ## TODO
 - Add authentication to the database

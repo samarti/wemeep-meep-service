@@ -506,4 +506,10 @@ public class ApiController {
             return response;
         }
     }
+
+    public static Response getCategories(Response response, Request request) {
+        CategoriesController controller = new CategoriesController();
+        response.body(controller.getAsJsonArray().toString());
+        return response;
+    }
 }
