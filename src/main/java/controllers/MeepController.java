@@ -91,7 +91,7 @@ public class MeepController {
     public static JsonObject addSenderPictureToMeepJson(JsonObject meep){
         UserController controller = new UserController();
         String senderId = meep.get("senderId").getAsString();
-        if(meep.get("categoryId").getAsInt() == Category.TWITTER.getId() && meep.get("twitterUserPicture") != null){
+        if(meep.get("categoryId") != null && meep.get("categoryId").getAsInt() == Category.TWITTER.getId() && meep.get("twitterUserPicture") != null){
             String pictureUrl = meep.get("twitterUserPicture").getAsString();
             if(pictureUrl != null)
                 meep.addProperty("senderPictureUrl", pictureUrl);

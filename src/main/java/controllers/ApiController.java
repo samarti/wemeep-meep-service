@@ -39,12 +39,12 @@ import static com.mongodb.client.model.Projections.include;
  */
 public class ApiController {
 
-    static MongoClient client = new MongoClient("54.232.209.214", 27017);
-    //static MongoClient client  = new MongoClient("dbmeep", 27017);
+    //static MongoClient client = new MongoClient("54.232.209.214", 27017);
+    static MongoClient client  = new MongoClient("dbmeep", 27017);
     static MongoDatabase database = client.getDatabase("local");
     static MongoCollection<Document> meepCol = database.getCollection("meeps");
-    //static String USER_SERVICE_URL = System.getenv().get("USER_SERVICE_URL");
-    static String USER_SERVICE_URL = "http://54.233.122.209:8080/";
+    static String USER_SERVICE_URL = System.getenv().get("USER_SERVICE_URL");
+    //static String USER_SERVICE_URL = "http://54.233.122.209:8080/";
 
     public static void init(){
         DBHelper.init(meepCol);
