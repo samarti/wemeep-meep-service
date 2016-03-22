@@ -10,6 +10,7 @@ import com.mongodb.client.model.FindOneAndUpdateOptions;
 import com.mongodb.client.model.ReturnDocument;
 import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.result.UpdateResult;
+import model.Category;
 import model.Meep;
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -82,7 +83,11 @@ public class MeepController {
     public static JsonObject addSenderPictureToMeepJson(JsonObject meep){
         UserController controller = new UserController();
         String senderId = meep.get("senderId").getAsString();
-        if(senderId != null) {
+        if(meep.get("categoryId").getAsInt() == Category.TWITTER.getId() && meep.get("twitterUserPicture") != null){
+            String pictureUrl = meep.get("twitterUserPicture").getAsString();
+            if(pictureUrl != null)
+                meep.addProperty("senderPictureUrl", pictureUrl);
+        } else if(senderId != null) {
             String pictureUrl = controller.getUserProfilePictureUrl(senderId);
             if(pictureUrl != null)
                 meep.addProperty("senderPictureUrl", pictureUrl);

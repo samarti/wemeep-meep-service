@@ -40,7 +40,7 @@ public class Main {
                 "3792449836-BYKKiZTnemmCFtvZoo5kwOCrhbB5bKRLIEDtQYs", "m4eE9BUvxprUnc7NmfgdxdaYVExha0NmwzW4vGoy7REiM");
 
         StatusesFilterEndpoint endpoint3 = new StatusesFilterEndpoint();
-        endpoint3.locations(Lists.newArrayList(new Location(new Location.Coordinate(-74, -36), new Location.Coordinate(-65, -28))));
+        endpoint3.locations(Lists.newArrayList(new Location(new Location.Coordinate(-122.356798, 37.213402), new Location.Coordinate(-121.9, 38.139441))));
 
         BasicClient client = new ClientBuilder()
                 .name("sampleExampleClient")
@@ -92,9 +92,10 @@ public class Main {
             System.out.println("Received valid tweet but too close to another");
             return null;
         }
-        System.out.println("Received valid tweet");
         meep.append("senderName", arg.getAsJsonObject("user").getAsJsonPrimitive("screen_name").getAsString());
+        System.out.println("Received valid tweet at " + lat + "," + longi + " posted by " + meep.getString("senderName"));
         meep.append("senderId", arg.getAsJsonObject("user").getAsJsonPrimitive("id").getAsInt());
+        meep.append("twitterUserPicture", arg.getAsJsonObject("user").getAsJsonPrimitive("profile_image_url").getAsString());
         meep.append("message", arg.getAsJsonPrimitive("text").getAsString());
         meep.append("type", "tweet");
         meep.append("isRoot", true);

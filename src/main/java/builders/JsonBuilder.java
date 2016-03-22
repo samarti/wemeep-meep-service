@@ -43,6 +43,8 @@ public class JsonBuilder {
         aux2.addProperty("viewCounter", aux.viewCounter);
         aux2.addProperty("commentCounter", aux.commentCounter);
         aux2.addProperty("categoryId", aux.categoryId);
+        if(aux.twitterUserPicture != null)
+            aux2.addProperty("twitterUserPicture", aux.twitterUserPicture);
         return aux2;
     }
 }

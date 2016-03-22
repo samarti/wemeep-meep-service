@@ -1,7 +1,5 @@
 package model;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -16,7 +14,7 @@ import java.util.List;
  * Rebecca Black
  */
 public class Meep {
-    public String senderName, message, type, pictureUrl, objectId, senderId;
+    public String senderName, message, type, pictureUrl, objectId, senderId, twitterUserPicture;
     public List<HashMap<String, String>> receipts, registrees, likes;
     public LinkedList<String> hashtags;
     public double lat, longi;
