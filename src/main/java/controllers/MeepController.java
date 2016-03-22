@@ -65,7 +65,7 @@ public class MeepController {
      */
     public static Document addSenderPictureToMeepDocument(Document meep){
         UserController controller = new UserController();
-        if(meep.getInteger("categoryId") == Category.TWITTER.getId()){
+        if(meep.containsKey("categoryId") && meep.getInteger("categoryId") == Category.TWITTER.getId()){
             if(meep.get("twitterUserPicture") != null){
                 String pictureUrl = meep.getString("twitterUserPicture");
                 if(pictureUrl != null)
