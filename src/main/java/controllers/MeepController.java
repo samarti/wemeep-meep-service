@@ -65,11 +65,19 @@ public class MeepController {
      */
     public static Document addSenderPictureToMeepDocument(Document meep){
         UserController controller = new UserController();
-        String senderId = meep.getString("senderId");
-        if(senderId != null) {
-            String pictureUrl = controller.getUserProfilePictureUrl(senderId);
-            if(pictureUrl != null)
-                meep.append("senderPictureUrl", pictureUrl);
+        if(meep.getInteger("categoryId") == Category.TWITTER.getId()){
+            if(meep.get("twitterUserPicture") != null){
+                String pictureUrl = meep.getString("twitterUserPicture");
+                if(pictureUrl != null)
+                    meep.put("senderPictureUrl", pictureUrl);
+            }
+        } else {
+            String senderId = meep.getString("senderId");
+            if (senderId != null) {
+                String pictureUrl = controller.getUserProfilePictureUrl(senderId);
+                if (pictureUrl != null)
+                    meep.append("senderPictureUrl", pictureUrl);
+            }
         }
         return meep;
     }
